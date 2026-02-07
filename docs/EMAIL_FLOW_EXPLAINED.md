@@ -73,7 +73,7 @@ User gets email in their inbox!
 
 ### Start the server:
 ```bash
-node server.secure.js
+node server.js
 ```
 
 ### Fill the registration form:
@@ -122,7 +122,7 @@ node test-email.js
 ### Test 2: Real Registration Flow
 ```bash
 # Start server
-node server.secure.js
+node server.js
 
 # Open browser
 # Go to http://localhost:3000/reg.html

@@ -83,7 +83,7 @@ TechFest2k26/
 │
 └── 🚀 Main Entry Point
     ├── server.js                   ⭐ NEW: Professional entry
-    └── server.secure.js            (backup)
+    └── server.js            (backup)
 ```
 
 ---
@@ -93,7 +93,7 @@ TechFest2k26/
 ### Before (Messy) ❌
 ```
 40+ files at root level
-- server.js, server.secure.js
+- server.js, server.js
 - test-email.js, test-neon.js
 - psql-interactive.js, setup-database.js
 - reg.html, index.html, gallery.html

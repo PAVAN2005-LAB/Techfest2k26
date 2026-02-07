@@ -59,7 +59,7 @@ TechFest2k26/
 ├── 📁 templates/                   # Presentation layer
 │   └── EmailTemplate.js            # Email HTML templates
 │
-├── 📄 server.secure.js            # ⭐ NEW SECURE SERVER
+├── 📄 server.js            # ⭐ NEW SECURE SERVER
 ├── 📄 server.js                   # Old server (backup)
 ├── 📄 reg.html                    # Updated registration form
 │
@@ -77,7 +77,7 @@ TechFest2k26/
 
 ### Start the Server
 ```bash
-node server.secure.js
+node server.js
 ```
 
 ### Access the Application
@@ -222,7 +222,7 @@ Request: { payment details }  ✅ Server verifies signature
 - [x] Created models (Registration)
 - [x] Created services (Payment, Email)
 - [x] Created templates (Email HTML)
-- [x] Built secure server (`server.secure.js`)
+- [x] Built secure server (`server.js`)
 - [x] Updated `reg.html` to fetch key from server
 - [x] Tested PostgreSQL connection
 - [x] Tested email sending
@@ -258,7 +258,7 @@ Request: { payment details }  ✅ Server verifies signature
 
 ## 🚨 Important Notes
 
-1. **Use `server.secure.js` in production**
+1. **Use `server.js` in production**
    - More secure
    - Better organized
    - Follows best practices
@@ -293,7 +293,7 @@ Your application now:
 
 ```bash
 # Start secure server
-node server.secure.js
+node server.js
 
 # Test database
 node test-neon.js

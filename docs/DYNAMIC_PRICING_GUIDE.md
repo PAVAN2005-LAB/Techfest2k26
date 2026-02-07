@@ -157,7 +157,7 @@ Email shows correct amount
 
 ### 1. Start the server:
 ```bash
-node server.secure.js
+node server.js
 ```
 
 ### 2. Check event price via API:
@@ -197,7 +197,7 @@ curl http://localhost:3000/api/event/techfest/Hack-Accelerate
 
 **Restart server:**
 ```bash
-node server.secure.js
+node server.js
 ```
 
 **Test:**
@@ -235,7 +235,7 @@ node server.secure.js
 
 ### Server doesn't see price changes?
 - Make sure you saved `events.config.json`
-- Restart the server: `node server.secure.js`
+- Restart the server: `node server.js`
 - The config is loaded when server starts
 
 ### Event shows ₹10 instead of actual price?
@@ -243,7 +243,7 @@ node server.secure.js
 - Example: "Hack-Accelerate" ≠ "hack-accelerate"
 
 ### Want to reload config without restart?
-Add this endpoint to `server.secure.js`:
+Add this endpoint to `server.js`:
 ```javascript
 app.post('/api/reload-events', (req, res) => {
   EventService.reloadConfig();
@@ -323,7 +323,7 @@ config/
 services/
   └── EventService.js             # Service to read config
 
-server.secure.js                  # Updated with dynamic pricing
+server.js                  # Updated with dynamic pricing
 reg.html                          # Updated to send event details
 ```
 

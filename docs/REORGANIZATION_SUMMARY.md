@@ -12,7 +12,7 @@ Your codebase has been transformed from a **messy collection of files** into a *
 ```
 TechFest2k26/
 ├── server.js
-├── server.secure.js
+├── server.js
 ├── test-email.js
 ├── setup-database.js
 ├── psql-interactive.js

@@ -154,7 +154,7 @@ Changes take effect immediately!
 
 ```bash
 # Start server with dynamic pricing
-node server.secure.js
+node server.js
 
 # Test event price
 curl http://localhost:3000/api/event/techfest/Hack-Accelerate

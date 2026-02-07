@@ -31,7 +31,7 @@ The config is **cached in memory** for performance. It doesn't reload automatica
 Press: Ctrl + C
 
 # Start it again
-node server.secure.js
+node server.js
 ```
 
 ### Method 2: Kill & Restart
@@ -40,7 +40,7 @@ node server.secure.js
 taskkill /F /IM node.exe
 
 # Start fresh
-node server.secure.js
+node server.js
 ```
 
 ---
@@ -71,7 +71,7 @@ Save file ✅
 # In terminal where server is running:
 Ctrl + C  (stop server)
 
-node server.secure.js  (start again)
+node server.js  (start again)
 ```
 
 ### Step 3: Test API
@@ -103,7 +103,7 @@ See: ₹5  (NEW PRICE!) ✅
 1. **Edit** `server/config/events.config.json`
 2. **Save** the file
 3. **Stop** server (Ctrl + C)
-4. **Start** server (`node server.secure.js`)
+4. **Start** server (`node server.js`)
 5. **Refresh** browser (Ctrl + Shift + R)
 
 ---
@@ -146,7 +146,7 @@ With `npm run dev`, the server will **automatically restart** when you edit `eve
 You can call the `reloadConfig()` method without restarting:
 
 ```javascript
-// Add this to server.secure.js:
+// Add this to server.js:
 app.post('/api/reload-config', (req, res) => {
     EventService.reloadConfig();
     res.json({ success: true, message: 'Config reloaded' });
@@ -164,7 +164,7 @@ curl -X POST http://localhost:3000/api/reload-config
 
 - [x] Edited `server/config/events.config.json` ✅
 - [ ] Stopped the server (Ctrl + C)
-- [ ] Restarted the server (`node server.secure.js`)
+- [ ] Restarted the server (`node server.js`)
 - [ ] Tested API (shows new price)
 - [ ] Refreshed browser (shows new price)
 

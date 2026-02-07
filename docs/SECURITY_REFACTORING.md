@@ -36,7 +36,7 @@ TechFest2k26/
 ├── templates/                 # Presentation layer
 │   └── EmailTemplate.js       # Email HTML generation
 │
-├── server.secure.js          # NEW SECURE SERVER ⭐
+├── server.js          # NEW SECURE SERVER ⭐
 ├── server.js                 # Old server (kept for reference)
 └── reg.html                  # Updated with secure key fetching
 ```
@@ -151,7 +151,7 @@ Once saved, data persists:
 
 ### 1. Start the Secure Server
 ```bash
-node server.secure.js
+node server.js
 ```
 
 ### 2. Test It
@@ -211,7 +211,7 @@ Expected response:
 mv server.js server.old.js
 
 # Use new secure server
-mv server.secure.js server.js
+mv server.js server.js
 
 # Start server
 node server.js
@@ -220,7 +220,7 @@ node server.js
 ### Option 2: Keep Both
 ```bash
 # Start secure server on different port
-PORT=3001 node server.secure.js
+PORT=3001 node server.js
 
 # Access at http://localhost:3001
 ```
@@ -306,7 +306,7 @@ npm install winston
    - Use different keys for dev/prod
 
 3. **Production Deployment**
-   - Use `server.secure.js` (or rename to `server.js`)
+   - Use `server.js` (or rename to `server.js`)
    - Set environment variables on hosting platform
    - Enable HTTPS
 
