@@ -1,0 +1,133 @@
+/* Reset & Defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* Leave space for left sidebar and top bar */
+  margin-left: 250px;
+  margin-top: 80px;
+  /* Added some buffer */
+  font-family: sans-serif;
+}
+
+/* Top Bar - College Name */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.top-bar a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.top-bar p {
+  font-family: 'Laila', sans-serif;
+  font-size: 2rem;
+  margin: 0;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Side Bar - Navigation */
+.side-bar {
+  position: fixed;
+  top: 80px;
+  /* Height of top bar */
+  left: 0;
+  width: 250px;
+  height: calc(100vh - 80px);
+  background-color: #111;
+  padding-top: 20px;
+  z-index: 999;
+  overflow-y: auto;
+  border-right: 1px solid #333;
+}
+
+.side-bar ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-bar ul li {
+  width: 100%;
+  border-bottom: 1px solid #222;
+}
+
+.side-bar ul li a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: block;
+  padding: 20px 25px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.side-bar ul li a:hover {
+  background-color: #00bcd4;
+  color: #000;
+  padding-left: 35px;
+  /* Slide effect */
+  font-weight: bold;
+}
+
+.side-bar ul li a i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 920px) {
+  .top-bar p {
+    font-size: 1.2rem;
+  }
+
+  .side-bar {
+    width: 70px;
+    /* Collapsed view or icons only? Or just hide? */
+    /* For now, let's keep it simple or allow hover expand. 
+       User didn't specify mobile behavior, but standard is hamburger.
+       Given the "virtual bar left" request, I'll stick to a visible bar.
+    */
+    transition: width 0.3s;
+  }
+
+  .side-bar:hover {
+    width: 250px;
+  }
+
+  .side-bar ul li a {
+    font-size: 0.9rem;
+    padding: 15px 10px;
+    text-align: center;
+  }
+
+  .side-bar:hover ul li a {
+    text-align: left;
+    padding: 20px 25px;
+  }
+
+  body {
+    margin-left: 70px;
+    margin-top: 80px;
+  }
+}

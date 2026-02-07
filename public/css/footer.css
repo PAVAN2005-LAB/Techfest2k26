@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	line-height: 1.5;
+	font-family: 'Poppins', sans-serif;
+}
+
+/* Footer Section */
+.footer {
+	background: linear-gradient(180deg, rgba(2, 0, 36, 1) 0%, rgba(3, 1, 41, 1) 28%, rgba(69, 15, 145, 1) 79%, rgba(88, 5, 139, 1) 100%);
+	padding: 70px 0;
+	width: 100%;
+}
+
+ul {
+	list-style: none;
+}
+
+.footer-container {
+	max-width: 1170px;
+	margin: auto;
+	padding: 0 15px;
+}
+
+.footer-row {
+	display: flex;
+	flex-wrap: nowrap;
+	/* Forces all columns to stay in one line on desktop */
+	justify-content: space-between;
+}
+
+.footer-col {
+	width: 20%;
+	/* Slightly less than 20% to account for margins/padding */
+	padding: 0 10px;
+}
+
+/* Ensure logos fit perfectly */
+.footer-logo {
+	width: 100%;
+	/* Makes logo responsive to the column width */
+	max-width: 150px;
+	/* Limits size so it doesn't look too big */
+	height: auto;
+	border-radius: 20px;
+	display: block;
+}
+
+.footer-col h4 {
+	font-size: 18px;
+	color: #ffffff;
+	text-transform: capitalize;
+	margin-bottom: 35px;
+	font-weight: 500;
+	position: relative;
+}
+
+.footer-col h4::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -10px;
+	background-color: #e91e63;
+	height: 2px;
+	width: 50px;
+}
+
+.footer-col p {
+	color: #ffffff;
+	opacity: 0.8;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+
+.footer-col ul li a {
+	font-size: 16px;
+	color: #bbbbbb;
+	text-decoration: none;
+	font-weight: 300;
+	display: block;
+	transition: all 0.3s ease;
+	margin-bottom: 10px;
+}
+
+.footer-col ul li a:hover {
+	color: #ffffff;
+	padding-left: 8px;
+}
+
+.footer-col .social-links a {
+	display: inline-block;
+	height: 40px;
+	width: 40px;
+	background-color: rgba(255, 255, 255, 0.2);
+	margin: 0 8px 8px 0;
+	text-align: center;
+	line-height: 40px;
+	border-radius: 50%;
+	color: #ffffff;
+	transition: all 0.5s ease;
+}
+
+.footer-col .social-links a:hover {
+	background-color: #ffffff;
+	color: #36004d;
+}
+
+.gcoea-website {
+	color: hsl(0, 0%, 92%);
+	text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media(max-width: 992px) {
+	.footer-row {
+		flex-wrap: wrap;
+		/* Allows wrapping on smaller screens */
+	}
+
+	.footer-col {
+		width: 33.33%;
+		/* 3 columns on tablet */
+		margin-bottom: 30px;
+	}
+}
+
+@media(max-width: 767px) {
+	.footer-col {
+		width: 50%;
+		/* 2 columns on small tablets */
+	}
+}
+
+@media(max-width: 574px) {
+	.footer-col {
+		width: 100%;
+		/* Stacked on mobile */
+		text-align: center;
+	}
+
+	.footer-col h4::before {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}

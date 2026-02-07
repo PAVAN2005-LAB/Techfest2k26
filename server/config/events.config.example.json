@@ -1,0 +1,18 @@
+{
+    "programName": {
+        "displayName": "Display Name for Program",
+        "teamName": "Team Name (for emails)",
+        "events": {
+            "Event Name": {
+                "price": 100,
+                "description": "Event description",
+                "teamSize": "Team size info"
+            },
+            "Another Event": {
+                "price": 200,
+                "description": "Another event description",
+                "teamSize": "1-5 participants"
+            }
+        }
+    }
+}

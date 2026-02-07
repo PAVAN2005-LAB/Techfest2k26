@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link href="https://fonts.googleapis.com/css2?family=Laila:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" media="screen and (max-width:920px )" href="/css/nav-responsive.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <!--link for css file-->
+  <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
+  <!-- link for social media logo -->
+  <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
+  <link rel="icon" href="/images/reg_ico.png">
+  <link rel="stylesheet" href="/css/reg.css">
+</head>
+
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <a href="/index.html">
+      <p>Government College of Engineering Dahod</p>
+    </a>
+  </div>
+
+  <!-- Side Bar -->
+  <nav class="side-bar">
+    <ul>
+      <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="/gec_dahod_event.html"><i class="fas fa-calendar-alt"></i> Events</a></li>
+      <li><a href="/reg.html"><i class="fas fa-user-plus"></i> Register</a></li>
+      <li><a href="/gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
+      <li><a href="#"><i class="fas fa-handshake"></i> Sponsors</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <h1 class="container__form-title">REGISTRATION</h1>
+    <form action="/register" method="POST">
+      <div class="container__main-user-info">
+        <!--the elemnts in form -->
+        <div class="container__user-input-box">
+          <label for="fullName">First Name</label>
+          <input type="text" id="container__firstName" name="fullName" placeholder="Enter first name"
+            title="Please enter your first name" required>
+        </div>
+        <div class="container__user-input-box">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="container__lastName" name="lastName" placeholder="Enter last name" required>
+        </div>
+        <div class="container__user-input-box">
+          <label for="Email">Email</label>
+          <input type="email" id="container__email" name="email" placeholder="Enter email" pattern=".+@gecdahod\.ac\.in"
+            title="Please enter an email address ending with @gecdahod.ac.in" required>
+        </div>
+
+        <div class="container__user-input-box">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="number" id="container__phoneNumber" name="phoneNumber" placeholder="Enter phone number"
+            required />
+        </div>
+        <div class="container__user-input-box">
+          <label for="programType">Program Type</label>
+          <select id="container__programType" name="programType" onchange="filterEvents()" required>
+            <option value="" selected>--Select Program--</option>
+            <option value="spardha">Spardha 2k26</option>
+            <option value="techfest">Techfest 2k26</option>
+            <option value="trividya">Trividya 2k26</option>
+          </select>
+        </div>
+
+        <div class="container__user-input-box">
+          <label for="select_event">Select Event</label>
+          <select id="container__event" name="event" required>
+            <option value="">--Select an option--</option>
+            <!-- Spardha Events -->
+            <option value="Net Cricket" class="event-option spardha">Net Cricket</option>
+            <option value="Box Cricket" class="event-option spardha">Box Cricket</option>
+            <option value="Volleyball" class="event-option spardha">Volleyball</option>
+            <option value="Kabaddi" class="event-option spardha">Kabaddi</option>
+            <option value="Chess" class="event-option spardha">Chess</option>
+
+
+            <!-- Techfest Events -->
+            <option value="Autocad Master" class="event-option techfest">Autocad Master</option>
+            <option value="Cosmo Clench" class="event-option techfest">Cosmo Clench</option>
+            <option value="Cad Mania" class="event-option techfest">Cad Mania</option>
+            <option value="Paper Presentation" class="event-option techfest">Paper Presentation (Eventia)</option>
+            <option value="Death Rush" class="event-option techfest">Death Rush</option>
+            <option value="Innov-a-thon" class="event-option techfest">Innov-a-thon</option>
+            <option value="Hack-Accelerate" class="event-option techfest">Hack-Accelerate</option>
+
+            <!-- Trividya Events -->
+            <option value="Dance" class="event-option trividya">Dance</option>
+            <option value="Singing" class="event-option trividya">Singing</option>
+            <option value="Drama" class="event-option trividya">Drama</option>
+            <option value="Fashion Show" class="event-option trividya">Fashion Show</option>
+
+            <!-- Other/Common -->
+            <option value="Paint Ball" class="event-option techfest spardha">Paint Ball</option>
+            <option value="Overkill" class="event-option techfest">Overkill (Valorant)</option>
+            <option value="Games Com" class="event-option techfest">Games Com</option>
+          </select>
+        </div>
+
+
+
+
+        <div class="container__user-input-box">
+          <label for="College">College Name</label>
+          <input type="text" id="container__collegeName" name="CollegeName" placeholder="College name" required />
+        </div>
+        <div class="container__user-input-box">
+          <label for="phoneNumber">Address</label>
+          <input type="text" id="container__address" name="address" placeholder="Current address" required />
+        </div>
+        <div class="container__user-input-box">
+          <label for="container__branch">Branch</label>
+          <select id="container__branch" name="branch" required>
+            <option value="" selected>--Select an option--</option>
+            <option value="Computer">Computer</option>
+            <option value="Electrical">Electrical</option>
+            <option value="Mechanical">Mechanical</option>
+            <option value="Civil">Civil</option>
+            <option value="E&C">E&C</option>
+
+          </select>
+        </div>
+        <div class="container__user-input-box">
+          <label for="container__sem">Semester</label>
+          <select id="container__sem" name="sem" required>
+            <option value="">--Select an option--</option>
+            <option value="1st">1st</option>
+            <option value="2nd">2nd</option>
+            <option value="3rd">3rd</option>
+            <option value="4th">4th</option>
+            <option value="5th">5th</option>
+            <option value="6th">6th</option>
+            <option value="7th">7th</option>
+            <option value="8th">8th</option>
+
+          </select>
+        </div>
+        <div class="container__user-input-box">
+          <label for="Enrollment No">Enrollment No</label>
+          <input type="text" id="container__enrollmentNo" name="enrollmentNo" placeholder="Enrollment No" required />
+        </div>
+
+      </div>
+      <div class="container__gender-details-box">
+        <span class="container__gender-title">Gender</span>
+        <div class="container__gender-category">
+          <input type="radio" name="gender" id="male" value="male" required>
+          <label for="male">Male</label>
+          <input type="radio" name="gender" id="female" value="female" required>
+          <label for="female">Female</label>
+          <input type="radio" name="gender" id="other" value="other" required>
+          <label for="other">Other</label>
+        </div>
+      </div>
+
+      <!-- Event Price Display -->
+      <div id="price-display"
+        style="display: none; margin: 20px 0; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+        <div style="color: white; font-size: 14px; margin-bottom: 5px;">Registration Fee</div>
+        <div id="price-amount" style="color: white; font-size: 32px; font-weight: bold;">₹0</div>
+        <div id="price-event" style="color: rgba(255,255,255,0.9); font-size: 12px; margin-top: 5px;">Select an event to
+          see price</div>
+      </div>
+
+      <button class="container__btn" type="submit" id="submit-btn">
+        <span id="btn-text">Pay & Register</span>
+      </button>
+
+    </form>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-row">
+        <div class="footer-col">
+          <img src="/images/gec_dahod_logo.jpg" alt="gec_dahod_logo" class="footer-logo" />
+        </div>
+
+        <div class="footer-col">
+          <h4>Address</h4>
+          <p>Government College of Engineering Dahod</p>
+          <p>Jhalod Road, Dahod, Gujarat</p>
+          <p>Pin-389151</p>
+          <p><a href="https://www.gecdahod.ac.in/" class="gcoea-website">www.gecdahod.ac.in</a></p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Help</h4>
+          <ul>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Register</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Follow Us</h4>
+          <div class="social-links">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <img src="/images/TRIVIDYA2K26_LOGO.png" alt="trividya2k26_logo" class="footer-logo" />
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    function filterEvents() {
+      const programType = document.getElementById('container__programType').value;
+      const eventSelect = document.getElementById('container__event');
+      const options = eventSelect.getElementsByClassName('event-option');
+
+      // Reset selection
+      eventSelect.value = "";
+
+      for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        if (programType === "" || option.classList.contains(programType)) {
+          option.style.display = 'block';
+          option.disabled = false;
+        } else {
+          option.style.display = 'none';
+          option.disabled = true;
+        }
+      }
+    }
+
+    // Initialize on load
+    window.onload = filterEvents;
+
+    // Fetch and display price when event is selected
+    async function updateEventPrice() {
+      const programType = document.getElementById('container__programType').value;
+      const event = document.getElementById('container__event').value;
+      const priceDisplay = document.getElementById('price-display');
+      const priceAmount = document.getElementById('price-amount');
+      const priceEvent = document.getElementById('price-event');
+      const submitBtn = document.getElementById('btn-text');
+
+      if (!programType || !event) {
+        priceDisplay.style.display = 'none';
+        submitBtn.textContent = 'Pay & Register';
+        return;
+      }
+
+      try {
+        // Fetch event details including price
+        const response = await fetch(`/api/event/${programType}/${encodeURIComponent(event)}`);
+        const result = await response.json();
+
+        if (result.success && result.event) {
+          const price = result.event.price;
+          const description = result.event.description;
+
+          // Show price display
+          priceDisplay.style.display = 'block';
+          priceAmount.textContent = `₹${price}`;
+          priceEvent.textContent = `${event} - ${description}`;
+
+          // Update button text
+          submitBtn.textContent = `Pay ₹${price} & Register`;
+
+          console.log(`✅ Price fetched: ₹${price} for ${event}`);
+        } else {
+          priceDisplay.style.display = 'none';
+          submitBtn.textContent = 'Pay & Register';
+        }
+      } catch (error) {
+        console.error('Error fetching price:', error);
+        priceDisplay.style.display = 'none';
+        submitBtn.textContent = 'Pay & Register';
+      }
+    }
+
+    // Listen for event selection change
+    document.getElementById('container__event').addEventListener('change', updateEventPrice);
+    document.getElementById('container__programType').addEventListener('change', updateEventPrice);
+
+    // Handle Payment and Registration
+    document.querySelector('form').addEventListener('submit', async function (e) {
+      e.preventDefault(); // Stop default form submission
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      // Basic client-side validation check (though 'required' attribute handles most)
+      if (!data.fullName || !data.email || !data.phoneNumber) {
+        alert("Please fill all required fields.");
+        return;
+      }
+
+      try {
+        // SECURITY: Fetch Razorpay key from server (not hardcoded!)
+        const configResponse = await fetch('/api/config/razorpay');
+        const config = await configResponse.json();
+
+        // 1. Create Order with event details for dynamic pricing
+        const response = await fetch('/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            programType: data.programType,
+            event: data.event
+          })
+        });
+        const order = await response.json();
+
+        if (!order || !order.id) {
+          alert("Error starting payment. Please try again.");
+          return;
+        }
+
+        // Store the actual event amount for later use
+        window.currentEventAmount = order.eventAmount || (order.amount / 100);
+
+        console.log(`Event: ${data.event} - Amount: ₹${window.currentEventAmount}`);
+
+        // 2. Open Razorpay with server-provided key
+        const options = {
+          "key": config.key, // ✅ SECURE: Fetched from server, not visible in source
+          "amount": order.amount,
+          "currency": "INR",
+          "name": "TechFest 2k26",
+          "description": "Registration Fee",
+          "order_id": order.id,
+          "handler": function (response) {
+            // 3. Payment Successful - Submit Registration
+            submitRegistration(data, response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature);
+          },
+          "prefill": {
+            "name": data.fullName + " " + data.lastName,
+            "email": data.email,
+            "contact": data.phoneNumber
+          },
+          "theme": {
+            "color": "#3399cc"
+          }
+        };
+
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+
+        rzp1.on('payment.failed', function (response) {
+          alert("Payment Failed: " + response.error.description);
+        });
+
+      } catch (err) {
+        console.error("Error:", err);
+        alert("Something went wrong. Please check console.");
+      }
+    });
+
+    async function submitRegistration(userData, paymentId, orderId, signature) {
+      const payload = {
+        ...userData,
+        razorpay_payment_id: paymentId,
+        razorpay_order_id: orderId,
+        razorpay_signature: signature,
+        amount: window.currentEventAmount || 10 // Use actual event amount
+      };
+
+      try {
+        const res = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert(result.message);
+          window.location.href = '/index.html';
+        } else {
+          alert("Registration failed: " + result.message);
+        }
+      } catch (err) {
+        console.error("Registration error:", err);
+        alert("Payment successful but registration failed. Contact support with Payment ID: " + paymentId);
+      }
+    }
+  </script>
+</body>
+
+</html>

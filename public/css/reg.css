@@ -1,0 +1,157 @@
+/* Global Reset - Removed to avoid conflicts with navbar.css 
+   navbar.css already handles box-sizing and basic resets.
+*/
+
+html {
+    /* Apply background here so it covers the entire viewport */
+    background: rgba(0, 0, 0, 0.83) url("images/giphy-downsized-large.gif") no-repeat center center fixed;
+    background-size: cover;
+    background-blend-mode: darken;
+    min-height: 100%;
+}
+
+body {
+    /* Main layout is handled by navbar.css (margins) */
+    display: flex;
+    /* Flex layout to push footer down */
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+
+    /* Remove background from body since it's on html now */
+    background: transparent;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    background: #140615b3;
+    padding: 28px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 2px rgba(6, 0, 8, 0.66);
+    margin: 20px auto 40px auto;
+    /* Centering */
+}
+
+.container__form-title {
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 6px;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    border-bottom: solid 1px white;
+}
+
+.container__main-user-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.container__user-input-box {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    /* Added spacing */
+}
+
+/* Alignment logic for 2-column layout */
+.container__user-input-box:nth-child(2n) {
+    justify-content: flex-end;
+}
+
+.container__user-input-box label {
+    width: 95%;
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 5px 0;
+}
+
+/* Shared styling for Inputs and Selects to ensure identical box size */
+.container__user-input-box input,
+.container__user-input-box select {
+    height: 40px;
+    width: 95%;
+    border-radius: 7px;
+    outline: none;
+    border: 1px solid grey;
+    padding: 0 10px;
+    background: white;
+    /* Ensures consistency */
+    font-size: 16px;
+}
+
+.container__user-input-box select {
+    cursor: pointer;
+    /* Optional: custom arrow logic can go here */
+}
+
+.container__gender-title {
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    border-bottom: 1px solid white;
+    margin-top: 10px;
+}
+
+.container__gender-category {
+    margin: 15px 0;
+    color: white;
+}
+
+.container__gender-category label {
+    padding: 0 20px 0 5px;
+    cursor: pointer;
+}
+
+.container__btn {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: rgb(209, 209, 209);
+    background: #36004d;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.container__btn:hover {
+    background: #030003b3;
+    color: rgba(252, 249, 249, 0.7);
+}
+
+/* Responsive Design */
+@media(max-width: 600px) {
+    .container {
+        min-width: 280px;
+        margin: 10px;
+    }
+
+    .container__user-input-box {
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    .container__user-input-box input,
+    .container__user-input-box select {
+        width: 100%;
+        /* Full width on mobile */
+    }
+
+    .container__main-user-info {
+        max-height: 450px;
+        overflow: auto;
+    }
+
+    .container__main-user-info::-webkit-scrollbar {
+        width: 0;
+    }
+}

@@ -1,0 +1,115 @@
+{
+    "spardha": {
+        "displayName": "Spardha 2k26",
+        "teamName": "Spardha Team",
+        "events": {
+            "Net Cricket": {
+                "price": 50,
+                "description": "Indoor cricket competition",
+                "teamSize": "5-8 players"
+            },
+            "Box Cricket": {
+                "price": 60,
+                "description": "Box cricket tournament",
+                "teamSize": "6-10 players"
+            },
+            "Volleyball": {
+                "price": 40,
+                "description": "Volleyball championship",
+                "teamSize": "6 players"
+            },
+            "Kabaddi": {
+                "price": 45,
+                "description": "Traditional kabaddi tournament",
+                "teamSize": "7 players"
+            },
+            "Paint Ball": {
+                "price": 70,
+                "description": "Paintball adventure",
+                "teamSize": "5-10 players"
+            }
+        }
+    },
+    "techfest": {
+        "displayName": "TechFest 2k26",
+        "teamName": "TechFest Team",
+        "events": {
+            "Autocad Master": {
+                "price": 20,
+                "description": "AutoCAD design competition",
+                "teamSize": "1-2 participants"
+            },
+            "Cosmo Clench": {
+                "price": 25,
+                "description": "Space technology challenge",
+                "teamSize": "2-3 participants"
+            },
+            "Cad Mania": {
+                "price": 200,
+                "description": "CAD modeling competition",
+                "teamSize": "1-2 participants"
+            },
+            "Paper Presentation": {
+                "price": 150,
+                "description": "Technical paper presentation (Eventia)",
+                "teamSize": "1-3 participants"
+            },
+            "Death Rush": {
+                "price": 300,
+                "description": "Racing competition",
+                "teamSize": "1 participant"
+            },
+            "Innov-a-thon": {
+                "price": 50,
+                "description": "Innovation hackathon",
+                "teamSize": "2-4 participants"
+            },
+            "Hack-Accelerate": {
+                "price": 60,
+                "description": "Coding hackathon",
+                "teamSize": "2-4 participants"
+            },
+            "Paint Ball": {
+                "price": 70,
+                "description": "Paintball adventure",
+                "teamSize": "5-10 players"
+            },
+            "Overkill": {
+                "price": 400,
+                "description": "Valorant gaming tournament",
+                "teamSize": "5 players"
+            },
+            "Games Com": {
+                "price": 350,
+                "description": "Multi-game competition",
+                "teamSize": "1-5 players"
+            }
+        }
+    },
+    "trividya": {
+        "displayName": "Trividya 2k26",
+        "teamName": "Trividya Team",
+        "events": {
+            "Dance": {
+                "price": 30,
+                "description": "Solo/Group dance performance",
+                "teamSize": "1-8 participants"
+            },
+            "Singing": {
+                "price": 15,
+                "description": "Solo singing competition",
+                "teamSize": "1 participant"
+            },
+            "Drama": {
+                "price": 40,
+                "description": "Theatrical performance",
+                "teamSize": "5-15 participants"
+            },
+            "Fashion Show": {
+                "price": 50,
+                "description": "Fashion modeling competition",
+                "teamSize": "5-10 participants"
+            }
+        }
+    }
+}
