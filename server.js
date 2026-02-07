@@ -1,72 +1,46 @@
-/**
- * TechFest 2k26 - Event Registration System
- * Main Server Entry Point
- * 
- * Features:
- * - Dynamic event pricing
- * - Secure Razorpay payment integration
- * - Email notifications
- * - PostgreSQL database (Neon)
- * - OOP, SOLID, ACID principles
- * 
- * @version 2.0.0
- * @author GEC Dahod TechFest Team
- */
+// Secure Server with OOP, SOLID, and ACID Principles
+// All sensitive data is hidden from client-side
 
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-// Import configurations and services
+// Import services and configs (Dependency Injection)
 const dbConfig = require('./server/config/database.config');
 const PaymentService = require('./server/services/PaymentService');
 const EmailService = require('./server/services/EmailService');
 const EventService = require('./server/services/EventService');
 const Registration = require('./server/models/Registration.model');
 
-// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ============================================
-// MIDDLEWARE
-// ============================================
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// ============================================
-// INITIALIZE SERVICES
-// ============================================
+// Initialize connections
 (async () => {
-    console.log('\n' + '='.repeat(60));
-    console.log('🚀 Initializing TechFest 2k26 Registration System');
-    console.log('='.repeat(60));
-
     await dbConfig.testConnection();
     await EmailService.verify();
-
-    console.log('='.repeat(60) + '\n');
 })();
 
 // ============================================
-// API ENDPOINTS (Must come BEFORE static files!)
+// SECURE ENDPOINT: Get Razorpay PUBLIC key only
 // ============================================
-
-/**
- * Get Razorpay Public Key (secure endpoint)
- * Only public key is exposed, secret stays on server
- */
 app.get('/api/config/razorpay', (req, res) => {
+    console.log('📍 GET /api/config/razorpay - Request received');
+    // Only send public key - secret stays on server
     res.json({
         key: PaymentService.getPublicKey()
     });
 });
+console.log('✅ Route registered: GET /api/config/razorpay');
 
-/**
- * Get all events for a specific program
- * @param {string} programType - spardha, techfest, or trividya
- */
+// ============================================
+// API: Get all events for a program
+// ============================================
 app.get('/api/events/:programType', (req, res) => {
     const { programType } = req.params;
     const events = EventService.getProgramEvents(programType);
@@ -74,18 +48,13 @@ app.get('/api/events/:programType', (req, res) => {
     if (events) {
         res.json({ success: true, events });
     } else {
-        res.status(404).json({
-            success: false,
-            message: 'Program not found'
-        });
+        res.status(404).json({ success: false, message: 'Program not found' });
     }
 });
 
-/**
- * Get specific event details with pricing
- * @param {string} programType - Program type
- * @param {string} eventName - Event name
- */
+// ============================================
+// API: Get specific event details
+// ============================================
 app.get('/api/event/:programType/:eventName', (req, res) => {
     const { programType, eventName } = req.params;
     const eventDetails = EventService.getEventDetails(programType, eventName);
@@ -93,24 +62,19 @@ app.get('/api/event/:programType/:eventName', (req, res) => {
     if (eventDetails) {
         res.json({ success: true, event: eventDetails });
     } else {
-        res.status(404).json({
-            success: false,
-            message: 'Event not found'
-        });
+        res.status(404).json({ success: false, message: 'Event not found' });
     }
 });
 
-/**
- * Create Razorpay Order with dynamic pricing
- * @body {string} programType - Program type
- * @body {string} event - Event name
- */
+// ============================================
+// ENDPOINT: Create Razorpay Order (with dynamic pricing)
+// ============================================
 app.post('/create-order', async (req, res) => {
     try {
         const { programType, event } = req.body;
 
         // Get event price from configuration
-        let amount = 10; // Default test amount
+        let amount = 1; // Default test amount
 
         if (programType && event) {
             const eventPrice = EventService.getEventPrice(programType, event);
@@ -127,6 +91,7 @@ app.post('/create-order', async (req, res) => {
         const result = await PaymentService.createOrder(amount);
 
         if (result.success) {
+            // Send order with amount info
             res.json({
                 ...result.order,
                 eventAmount: amount // Include original amount for client
@@ -146,10 +111,9 @@ app.post('/create-order', async (req, res) => {
     }
 });
 
-/**
- * Process Registration with Payment Verification
- * @body {object} Registration data + payment details
- */
+// ============================================
+// ENDPOINT: Registration (with payment verification)
+// ============================================
 app.post('/register', async (req, res) => {
     try {
         const {
@@ -225,67 +189,37 @@ app.post('/register', async (req, res) => {
 });
 
 // ============================================
-// STATIC FILE SERVING (After API routes!)
+// Static File Serving (After API routes!)
 // ============================================
+// Serve CSS and images
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-// Root route
+// Serve HTML pages at /pages path
+app.use('/pages', express.static(path.join(__dirname, 'public/pages')));
+
+// AI AGENT FIX: Serve pages at root level too so /index.html works!
+app.use(express.static(path.join(__dirname, 'public/pages')));
+
+// Fallback: serve other static files from public root
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Root route - explicitly serve reg.html (or index.html as preferred)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/pages/index.html'));
 });
 
-// Serve static files from public directory
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Serve pages from public/pages  
-app.use('/pages', express.static(path.join(__dirname, 'public/pages')));
-
 // ============================================
-// ERROR HANDLING
-// ============================================
-
-// 404 Handler
-app.use((req, res) => {
-    res.status(404).json({
-        error: 'Not Found',
-        message: `Cannot ${req.method} ${req.url}`
-    });
-});
-
-// Global Error Handler
-app.use((err, req, res, next) => {
-    console.error('❌ Server Error:', err.stack);
-    res.status(500).json({
-        error: 'Internal Server Error',
-        message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
-    });
-});
-
-// ============================================
-// START SERVER
+// Start Server
 // ============================================
 app.listen(PORT, () => {
-    console.log('\n' + '='.repeat(60));
-    console.log('🚀 Server Running Successfully');
-    console.log('='.repeat(60));
+    console.log('\n' + '='.repeat(50));
+    console.log('🚀 Secure Server Running');
+    console.log('='.repeat(50));
     console.log(`📍 URL: http://localhost:${PORT}`);
     console.log(`🔒 Security: OOP + SOLID + ACID principles`);
     console.log(`🗄️  Database: PostgreSQL (Neon)`);
-    console.log(`💳 Payment: Razorpay`);
+    console.log(`💳 Payment: Razorpay (secure)`);
     console.log(`📧 Email: Nodemailer (Gmail)`);
-    console.log(`🎯 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log('='.repeat(60));
-    console.log('\n💡 Ready to accept registrations!\n');
+    console.log('='.repeat(50) + '\n');
 });
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('\n👋 Shutting down gracefully...');
-    process.exit(0);
-});
-
-process.on('SIGINT', () => {
-    console.log('\n👋 Shutting down gracefully...');
-    process.exit(0);
-});
-
-module.exports = app;
