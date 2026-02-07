@@ -18,7 +18,7 @@ A robust, secure, and dynamic event registration platform for GEC Dahod's TechFe
 ### 🎨 Rich User Experience
 - **Responsive Design:** Optimized for mobile and desktop.
 - **Event Detail Pages:** 16+ dedicated pages for each event (Net Cricket, Cosmo Clench, etc.) with full descriptions and direct registration links.
-- **Gallery:** Photo showcase of previous events.
+- **Gallery:** Photo showcase of previous events (powered by `public/images/gallery`).
 
 ### 🔒 Security Framework
 - **Secure Backend:** Refactored structure following OOP and SOLID principles.
@@ -42,7 +42,9 @@ TechFest2k26/
 │
 ├── public/                 # Frontend Assets
 │   ├── css/                # Stylesheets (Navbar, Hero, Event Details)
-│   ├── images/             # Logos, Event Posters, Icons
+│   ├── images/             # ALL Assets (Moved from root)
+│   │   ├── event-logos/    # specific event images
+│   │   └── ...             # Gallery and UI images
 │   └── pages/              # HTML Views
 │       ├── tech_fest_events/ # 📁 16 Individual Event Detail Pages
 │       ├── reg.html          # Registration Form
