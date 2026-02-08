@@ -2,6 +2,7 @@
 
 A robust, secure, and dynamic event registration platform for GEC Dahod's TechFest 2k26. Built with Node.js, Express, PostgreSQL, and Razorpay.
 
+live link: https://techfest2k26.onrender.com
 ---
 
 ## ✨ Key Features
