@@ -49,7 +49,7 @@ class PaymentService {
         }
     }
 
-    // Get public key for client-side (safe to expose)
+    // Get public key for client-side 
     getPublicKey() {
         return paymentConfig.getPublicKey();
     }
