@@ -52,7 +52,21 @@
         <div class="container__user-input-box">
           <label for="lastName">Last Name</label>
           <input type="text" id="container__lastName" name="lastName" placeholder="Enter last name" required>
+        
         </div>
+        </div>
+      <div class="container__gender-details-box">
+        <span class="container__gender-title">Gender</span>
+        <div class="container__gender-category">
+          <input type="radio" name="gender" id="male" value="male" required>
+          <label for="male">Male</label>
+          <input type="radio" name="gender" id="female" value="female" required>
+          <label for="female">Female</label>
+          <input type="radio" name="gender" id="other" value="other" required>
+          <label for="other">Other</label>
+        </div>
+      </div>
+      
         <div class="container__user-input-box">
           <label for="Email">Email</label>
           <input type="email" id="container__email" name="email" placeholder="Enter email" pattern=".+@gecdahod\.ac\.in"
@@ -151,21 +165,10 @@
         </div>
         <div class="container__user-input-box">
           <label for="Enrollment No">Enrollment No</label>
-          <input type="text" id="container__enrollmentNo" name="enrollmentNo" placeholder="Enrollment No" required />
+          <input type="number" id="container__enrollmentNo" name="enrollmentNo" pattern="[0-9]{12}" placeholder="Enrollment No" required />
         </div>
 
-      </div>
-      <div class="container__gender-details-box">
-        <span class="container__gender-title">Gender</span>
-        <div class="container__gender-category">
-          <input type="radio" name="gender" id="male" value="male" required>
-          <label for="male">Male</label>
-          <input type="radio" name="gender" id="female" value="female" required>
-          <label for="female">Female</label>
-          <input type="radio" name="gender" id="other" value="other" required>
-          <label for="other">Other</label>
-        </div>
-      </div>
+      
 
       <!-- Event Price Display -->
       <div id="price-display"
