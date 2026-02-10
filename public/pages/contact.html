@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - TechFest 2k26</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Laila:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/navbar.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/reg.css" />
+    <!-- Reusing reg.css for form styling -->
+
+    <link rel="stylesheet" href="/css/contact.css" />
+
+    <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="/images/TRIVIDYA2K26_LOGO.png">
+</head>
+
+<body>
+    <!-- Helper Scripts -->
+    <script src="/js/navbar.js"></script>
+
+    <div class="contact-container">
+        <!-- Contact Form Section -->
+        <div class="form-section">
+            <h2>Contact Us</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="contactName" name="name" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="contactEmail" name="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="contactMessage" name="message" rows="5" required
+                        placeholder="Type your inquiry here..."></textarea>
+                </div>
+                <button type="submit" class="container__btn">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Check Registration Section -->
+        <div class="form-section">
+            <h2>Check Registration</h2>
+            <p style="margin-bottom: 15px; font-size: 0.9em; opacity: 0.8;">
+                Enter your Email or Order ID to verify your event registrations.
+            </p>
+            <form id="checkRegForm">
+                <div class="form-group">
+                    <label for="query">Email or Order ID</label>
+                    <input type="text" id="regQuery" name="query" required placeholder="">
+                </div>
+                <button type="submit" class="container__btn">Check Status</button>
+            </form>
+
+            <div id="checkResult" class="result-box">
+                <!-- Results will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/footer.js"></script>
+
+    <script src="/js/contact.js"></script>
+</body>
+
+</html>

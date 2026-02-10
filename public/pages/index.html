@@ -12,33 +12,71 @@
   <link href="https://fonts.googleapis.com/css2?family=Laila:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/navbar.css" />
   <link rel="stylesheet" href="/css/index.css" />
-  <link rel="stylesheet" media="screen and (max-width:920px )" href="/css/nav-responsive.css" />
+  <!-- Side Notice Board -->
+  <link rel="stylesheet" href="/css/notice_box.css">
+  <link rel="stylesheet" href="/css/nav-responsive.css" />
   <link rel="stylesheet" href="/css/footer.css" />
   <!--link for css file-->
   <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
   <!-- link for social media logo -->
   <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
 </head>
+
+
+
 
 <body>
   <!--Navbar-->
   <!-- Top Bar -->
-  <div class="top-bar">
-    <a href="/index.html">
-      <p>Government College of Engineering Dahod</p>
-    </a>
-  </div>
+  <script src="/js/navbar.js"></script>
 
-  <!-- Side Bar -->
-  <nav class="side-bar">
-    <ul>
-      <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="/gec_dahod_event.html"><i class="fas fa-calendar-alt"></i> Events</a></li>
-      <li><a href="/reg.html"><i class="fas fa-user-plus"></i> Register</a></li>
-      <li><a href="/gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
-      <li><a href="#"><i class="fas fa-handshake"></i> Sponsors</a></li>
-    </ul>
-  </nav>
+
+
+
+
+  <!-- Side Notice Board -->
+  <div id="noticeSideBox">
+    <div class="notice-wrapper collapsed" id="noticeSection">
+      <div class="notice-toggle" id="noticeToggle">
+        <span>NOTICES</span>
+      </div>
+      <div class="notice-header">
+        <h3><i class="fas fa-bullhorn"></i> UPDATES</h3>
+      </div>
+      <div class="notice-content">
+        <div class="notice-scroll">
+          <div class="notice-item">
+            <span class="notice-date">Feb 15, 2026 <span class="new-badge">NEW</span></span>
+            <p class="notice-text">Registration for Trividya events is now open! Early bird discounts available.</p>
+          </div>
+          <div class="notice-item">
+            <span class="notice-date">Feb 12, 2026</span>
+            <p class="notice-text">Updated schedule for the Hackathon. Check the events page for details.</p>
+          </div>
+          <div class="notice-item">
+            <span class="notice-date">Feb 10, 2026</span>
+            <p class="notice-text">Welcome to the official TechFest 2k26 website! Stay tuned for more updates.</p>
+          </div>
+          <!-- Duplicate for seamless scrolling -->
+          <div class="notice-item">
+            <span class="notice-date">Feb 15, 2026 <span class="new-badge">NEW</span></span>
+            <p class="notice-text">Registration for Trividya events is now open! Early bird discounts available.</p>
+          </div>
+          <div class="notice-item">
+            <span class="notice-date">Feb 12, 2026</span>
+            <p class="notice-text">Updated schedule for the Hackathon. Check the events page for details.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/notice.js"></script>
+
+
+
+
 
   <!--Homepage-->
   <div class="banner">
@@ -46,9 +84,34 @@
 
       <img src="/images/TRIVIDYA2K26_LOGO.png" height="290" class="logo" />
       <p>
-        <i>WELCOME TO <b>TRIVIDIYA 2K26 </b>and<b>SPARDHA 2K26</b> ORGANISED BY GEC Dahod</i>
+        <i>WELCOME TO <b>TRIVIDIYA 2K26 </b>and<b> SPARDHA 2K26</b> ORGANISED BY GEC Dahod</i>
         <br />
       </p>
+
+
+      <!-- Countdown Timer -->
+      <div class="countdown-container" id="countdown">
+        <div class="countdown-label">EVENT STARTS IN</div>
+        <div class="countdown-boxes">
+          <div class="countdown-box">
+            <span id="days" class="countdown-number">00</span>
+            <span class="countdown-unit"></span>
+          </div>
+          <div class="countdown-box">
+            <span id="hours" class="countdown-number">00</span>
+            <span class="countdown-unit"></span>
+          </div>
+          <div class="countdown-box">
+            <span id="minutes" class="countdown-number">00</span>
+            <span class="countdown-unit"></span>
+          </div>
+          <div class="countdown-box">
+            <span id="seconds" class="countdown-number">00</span>
+            <span class="countdown-unit"></span>
+          </div>
+        </div>
+      </div>
+
       <div>
         <a href="/reg.html">
           <button type="button"><span></span> REGISTER NOW</button>
@@ -57,44 +120,31 @@
     </div>
   </div>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-row">
-        <div class="footer-col">
-          <img src="/images/gec_dahod_logo.jpg" alt="gec_dahod_logo" class="footer-logo" />
-        </div>
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top" title="Back to Top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
 
-        <div class="footer-col">
-          <h4>Address</h4>
-          <p>Government College of Engineering Dahod</p>
-          <p>Jhalod Road, Dahod, Gujarat</p>
-          <p>Pin-389151</p>
-          <p><a href="https://www.gecdahod.ac.in/" class="gcoea-website">www.gecdahod.ac.in</a></p>
-        </div>
+  <footer class="footer"></footer>
+  <script src="/js/footer.js"></script>
+  <script src="/js/countdown.js"></script>
 
-        <div class="footer-col">
-          <h4>Help</h4>
-          <ul>
-            <li><a href="#">FAQs</a></li>
-            <li><a href="/index.html">Home</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="/reg.html">Register</a></li>
-          </ul>
-        </div>
+  <!-- Register Service Worker for PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(function () { });
+    }
 
-        <div class="footer-col">
-          <h4>Follow Us</h4>
-          <div class="social-links">
-            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-youtube"></i></a>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <img src="/images/TRIVIDYA2K26_LOGO.png" alt="trividya2k26_logo" class="footer-logo" />
-        </div>
-      </div>
-    </div>
-  </footer>
+    // Back to Top button
+    var backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'flex';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+    backToTopBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>

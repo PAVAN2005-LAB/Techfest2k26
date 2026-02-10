@@ -17,28 +17,13 @@
   <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
   <!-- link for social media logo -->
   <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
-  <link rel="icon" href="/images/reg_ico.png">
+  <link rel="icon" type="image/png" href="/images/TRIVIDYA2K26_LOGO.png">
   <link rel="stylesheet" href="/css/reg.css">
 </head>
 
 <body>
   <!-- Top Bar -->
-  <div class="top-bar">
-    <a href="/index.html">
-      <p>Government College of Engineering Dahod</p>
-    </a>
-  </div>
-
-  <!-- Side Bar -->
-  <nav class="side-bar">
-    <ul>
-      <li><a href="/index.html"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="/gec_dahod_event.html"><i class="fas fa-calendar-alt"></i> Events</a></li>
-      <li><a href="/reg.html"><i class="fas fa-user-plus"></i> Register</a></li>
-      <li><a href="/gallery.html"><i class="fas fa-images"></i> Gallery</a></li>
-      <li><a href="#"><i class="fas fa-handshake"></i> Sponsors</a></li>
-    </ul>
-  </nav>
+  <script src="/js/navbar.js"></script>
   <div class="container">
     <h1 class="container__form-title">REGISTRATION</h1>
     <form action="/register" method="POST">
@@ -52,9 +37,9 @@
         <div class="container__user-input-box">
           <label for="lastName">Last Name</label>
           <input type="text" id="container__lastName" name="lastName" placeholder="Enter last name" required>
-        
+
         </div>
-        </div>
+      </div>
       <div class="container__gender-details-box">
         <span class="container__gender-title">Gender</span>
         <div class="container__gender-category">
@@ -66,7 +51,8 @@
           <label for="other">Other</label>
         </div>
       </div>
-      
+
+      <div class="container__main-user-info">
         <div class="container__user-input-box">
           <label for="Email">Email</label>
           <input type="email" id="container__email" name="email" placeholder="Enter email" pattern=".+@gecdahod\.ac\.in"
@@ -94,7 +80,8 @@
             <option value="">--Select an option--</option>
             <!-- Spardha Events -->
             <option value="Cricket" class="event-option spardha">Cricket</option>
-            <option value="Kho-kho" class="event-option spardha">Kho-kho</option>
+
+            <option value="Kho-Kho" class="event-option spardha">Kho-kho</option>
             <option value="Volleyball" class="event-option spardha">Volleyball</option>
             <option value="Kabaddi" class="event-option spardha">Kabaddi</option>
             <option value="Tug of War" class="event-option spardha">Tug of War</option>
@@ -111,6 +98,8 @@
             <option value="Death Rush" class="event-option techfest">Death Rush</option>
             <option value="Innov-a-thon" class="event-option techfest">Innov-a-thon</option>
             <option value="Hack-Accelerate" class="event-option techfest">Hack-Accelerate</option>
+            <option value="Grab and Win" class="event-option techfest">Grab and Win</option>
+            <option value="EV Exhibition" class="event-option techfest">EV Exhibition</option>
 
             <!-- Trividya Events -->
             <option value="Dance" class="event-option trividya">Dance</option>
@@ -119,7 +108,7 @@
             <option value="Fashion Show" class="event-option trividya">Fashion Show</option>
 
             <!-- Other/Common -->
-            <option value="Paint Ball" class="event-option techfest spardha">Paint Ball</option>
+            <option value="Paint Ball" class="event-option techfest">Paint Ball</option>
             <option value="Overkill" class="event-option techfest">Overkill (Valorant)</option>
             <option value="Games Com" class="event-option techfest">Games Com</option>
           </select>
@@ -132,10 +121,7 @@
           <label for="College">College Name</label>
           <input type="text" id="container__collegeName" name="CollegeName" placeholder="College name" required />
         </div>
-        <div class="container__user-input-box">
-          <label for="phoneNumber">Address</label>
-          <input type="text" id="container__address" name="address" placeholder="Current address" required />
-        </div>
+
         <div class="container__user-input-box">
           <label for="container__branch">Branch</label>
           <select id="container__branch" name="branch" required>
@@ -165,10 +151,14 @@
         </div>
         <div class="container__user-input-box">
           <label for="Enrollment No">Enrollment No</label>
-          <input type="number" id="container__enrollmentNo" name="enrollmentNo" pattern="[0-9]{12}" placeholder="Enrollment No" required />
+          <input type="number" id="container__enrollmentNo" name="enrollmentNo" pattern="[0-9]{12}"
+            placeholder="Enrollment No" required />
         </div>
+      </div>
 
-      
+
+
+
 
       <!-- Event Price Display -->
       <div id="price-display"
@@ -186,220 +176,10 @@
     </form>
   </div>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-row">
-        <div class="footer-col">
-          <img src="/images/gec_dahod_logo.jpg" alt="gec_dahod_logo" class="footer-logo" />
-        </div>
-        <div class="footer-col">
-          <h4>Address</h4>
-          <p>Government College of Engineering Dahod</p>
-          <p>Jhalod Road, Dahod, Gujarat</p>
-          <p>Pin-389151</p>
-          <p><a href="https://www.gecdahod.ac.in/" class="gcoea-website">www.gecdahod.ac.in</a></p>
-        </div>
-        <div class="footer-col">
-          <h4>Help</h4>
-          <ul>
-            <li><a href="#">FAQs</a></li>
-            <li><a href="/index.html">Home</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="/reg.html">Register</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Follow Us</h4>
-          <div class="social-links">
-            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-youtube"></i></a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <img src="/images/TRIVIDYA2K26_LOGO.png" alt="trividya2k26_logo" class="footer-logo" />
-        </div>
-      </div>
-    </div>
-  </footer>
+  <footer class="footer"></footer>
+  <script src="/js/footer.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script>
-    function filterEvents() {
-      const programType = document.getElementById('container__programType').value;
-      const eventSelect = document.getElementById('container__event');
-      const options = eventSelect.getElementsByClassName('event-option');
-
-      // Reset selection
-      eventSelect.value = "";
-
-      for (let i = 0; i < options.length; i++) {
-        const option = options[i];
-        if (programType === "" || option.classList.contains(programType)) {
-          option.style.display = 'block';
-          option.disabled = false;
-        } else {
-          option.style.display = 'none';
-          option.disabled = true;
-        }
-      }
-    }
-
-    // Initialize on load
-    window.onload = filterEvents;
-
-    // Fetch and display price when event is selected
-    async function updateEventPrice() {
-      const programType = document.getElementById('container__programType').value;
-      const event = document.getElementById('container__event').value;
-      const priceDisplay = document.getElementById('price-display');
-      const priceAmount = document.getElementById('price-amount');
-      const priceEvent = document.getElementById('price-event');
-      const submitBtn = document.getElementById('btn-text');
-
-      if (!programType || !event) {
-        priceDisplay.style.display = 'none';
-        submitBtn.textContent = 'Pay & Register';
-        return;
-      }
-
-      try {
-        // Fetch event details including price
-        const response = await fetch(`/api/event/${programType}/${encodeURIComponent(event)}`);
-        const result = await response.json();
-
-        if (result.success && result.event) {
-          const price = result.event.price;
-          const description = result.event.description;
-
-          // Show price display
-          priceDisplay.style.display = 'block';
-          priceAmount.textContent = `₹${price}`;
-          priceEvent.textContent = `${event} - ${description}`;
-
-          // Update button text
-          submitBtn.textContent = `Pay ₹${price} & Register`;
-
-          console.log(`✅ Price fetched: ₹${price} for ${event}`);
-        } else {
-          priceDisplay.style.display = 'none';
-          submitBtn.textContent = 'Pay & Register';
-        }
-      } catch (error) {
-        console.error('Error fetching price:', error);
-        priceDisplay.style.display = 'none';
-        submitBtn.textContent = 'Pay & Register';
-      }
-    }
-
-    // Listen for event selection change
-    document.getElementById('container__event').addEventListener('change', updateEventPrice);
-    document.getElementById('container__programType').addEventListener('change', updateEventPrice);
-
-    // Handle Payment and Registration
-    document.querySelector('form').addEventListener('submit', async function (e) {
-      e.preventDefault(); // Stop default form submission
-
-      const formData = new FormData(this);
-      const data = Object.fromEntries(formData.entries());
-
-      // Basic client-side validation check (though 'required' attribute handles most)
-      if (!data.fullName || !data.email || !data.phoneNumber) {
-        alert("Please fill all required fields.");
-        return;
-      }
-
-      try {
-        // SECURITY: Fetch Razorpay key from server (not hardcoded!)
-        const configResponse = await fetch('/api/config/razorpay');
-        const config = await configResponse.json();
-
-        // 1. Create Order with event details for dynamic pricing
-        const response = await fetch('/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            programType: data.programType,
-            event: data.event
-          })
-        });
-        const order = await response.json();
-
-        if (!order || !order.id) {
-          alert("Error starting payment. Please try again.");
-          return;
-        }
-
-        // Store the actual event amount for later use
-        window.currentEventAmount = order.eventAmount || (order.amount / 100);
-
-        console.log(`Event: ${data.event} - Amount: ₹${window.currentEventAmount}`);
-
-        // 2. Open Razorpay with server-provided key
-        const options = {
-          "key": config.key, // ✅ SECURE: Fetched from server, not visible in source
-          "amount": order.amount,
-          "currency": "INR",
-          "name": "TechFest 2k26",
-          "description": "Registration Fee",
-          "order_id": order.id,
-          "handler": function (response) {
-            // 3. Payment Successful - Submit Registration
-            submitRegistration(data, response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature);
-          },
-          "prefill": {
-            "name": data.fullName + " " + data.lastName,
-            "email": data.email,
-            "contact": data.phoneNumber
-          },
-          "theme": {
-            "color": "#3399cc"
-          }
-        };
-
-        const rzp1 = new Razorpay(options);
-        rzp1.open();
-
-        rzp1.on('payment.failed', function (response) {
-          alert("Payment Failed: " + response.error.description);
-        });
-
-      } catch (err) {
-        console.error("Error:", err);
-        alert("Something went wrong. Please check console.");
-      }
-    });
-
-    async function submitRegistration(userData, paymentId, orderId, signature) {
-      const payload = {
-        ...userData,
-        razorpay_payment_id: paymentId,
-        razorpay_order_id: orderId,
-        razorpay_signature: signature,
-        amount: window.currentEventAmount || 10 // Use actual event amount
-      };
-
-      try {
-        const res = await fetch('/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await res.json();
-        if (result.success) {
-          alert(result.message);
-          window.location.href = '/index.html';
-        } else {
-          alert("Registration failed: " + result.message);
-        }
-      } catch (err) {
-        console.error("Registration error:", err);
-        alert("Payment successful but registration failed. Contact support with Payment ID: " + paymentId);
-      }
-    }
-  </script>
+  <script src="/js/reg.js"></script>
 </body>
 
 </html>
-

@@ -1,29 +1,33 @@
-*{
-    margin:0;
+* {
+    margin: 0;
     padding: 0;
     font-family: sans-serif;
-	-webkit-tap-highlight-color: transparent;
-}
-.banner{
-    width: 100%;
-    height: 100vh;
-    background-image: linear-gradient(rgba(19, 2, 35, 0.75),rgba(0,0,0,0.75)),url("./images/image.jpg");
-    background-size:cover;
-    background-position: center;
-    background-attachment:fixed;
-    color: white;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    
+    -webkit-tap-highlight-color: transparent;
 }
 
-img{
-border-radius:50%;
+.banner {
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(19, 2, 35, 0.75), rgba(0, 0, 0, 0.75)), url("./images/image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+    overflow: visible;
 }
-.background-image{
-    opacity:30%;
+
+img {
+    border-radius: 50%;
 }
+
+.background-image {
+    opacity: 30%;
+}
+
 /* .navbar{
     width: 85%;
     margin: auto;
@@ -32,90 +36,255 @@ border-radius:50%;
     align-items:center;
     justify-content: space-between;
 } */
-.logo{
+.logo {
     width: 320px;
     cursor: pointer;
     background-position: center;
     margin-bottom: 40px;
 }
-.navbar ul li{
+
+.navbar ul li {
     list-style: none;
     display: inline-block;
     margin: 0 20px;
     position: relative;
 }
-.navbar ul li a{
+
+.navbar ul li a {
     text-decoration: none;
-    color:#fff;
-    text-transform:uppercase;
+    color: #fff;
+    text-transform: uppercase;
 }
-.navbar ul li::after{
+
+.navbar ul li::after {
     content: '';
     height: 3px;
-    width:0;
+    width: 0;
     background: #009688;
     position: absolute;
-    left:0;
-    bottom:-10px;
-    transition:0.5s;
+    left: 0;
+    bottom: -10px;
+    transition: 0.5s;
 }
-.navbar ul li:hover::after{
-    width:100%;
-}
-.content1{
+
+.navbar ul li:hover::after {
     width: 100%;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+}
+
+.content1 {
+    width: 100%;
+    max-width: 900px;
     text-align: center;
     color: #fff;
+    padding: 20px 15px;
 }
-.content h1{
+
+.content h1 {
     font-size: 70px;
     margin-top: 80px;
 }
-.content p{
+
+.content p {
     margin: 20px auto;
     font-weight: 100;
     line-height: 25px;
 }
-button{
-    width:200px;
+
+button {
+    width: 200px;
     padding: 15px 0;
     text-align: center;
     margin: 20px 10px;
-    border-radius:25px;
+    border-radius: 25px;
     font-weight: bold;
     border: 2px solid #700c94;
     background: transparent;
     color: #fff;
     cursor: pointer;
     position: relative;
-    overflow:hidden;
+    overflow: hidden;
     margin-top: 35px;
     cursor: pointer;
     transition: 0.2s ease;
     margin: 15px;
 }
- span{
+
+span {
     background: #60049a;
     height: 100%;
     width: 100%;
     border-radius: 25px;
-    position:absolute;
-    left:0;
-    bottom:0;
-    z-index:-1;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
     transition: 0.5s;
 }
 
-button:hover{
+button:hover {
     box-shadow: 20px 20px 30px rgba(184, 99, 233, 0.26);
     color: antiquewhite;
-  }
+}
+
 @media(max-width: 529px) {
-    .logo{
+    .logo {
         width: 200px;
         height: 200px;
+    }
+}
+
+/* Mobile responsive */
+@media(max-width: 768px) {
+    .content h1 {
+        font-size: 32px;
+        margin-top: 40px;
+    }
+
+    .content p {
+        font-size: 14px;
+        padding: 0 15px;
+    }
+
+    button {
+        width: 160px;
+        padding: 12px 0;
+        font-size: 14px;
+        margin: 8px;
+    }
+
+    .banner {
+        background-attachment: scroll;
+        /* Fix for mobile Safari */
+    }
+}
+
+@media(max-width: 400px) {
+    .content h1 {
+        font-size: 24px;
+    }
+
+    button {
+        width: 140px;
+        padding: 10px 0;
+        font-size: 13px;
+    }
+}
+
+/* Countdown Timer */
+.countdown-container {
+    margin: 25px auto 10px;
+    text-align: center;
+}
+
+.countdown-label {
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.countdown-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.countdown-box {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 12px 18px;
+    min-width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.countdown-box:hover {
+    transform: scale(1.05);
+    border-color: #883ff9;
+}
+
+.countdown-number {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Laila', monospace;
+    text-shadow: 0 0 15px rgba(136, 63, 249, 0.5);
+}
+
+.countdown-unit {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #60049a, #883ff9);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(96, 4, 154, 0.4);
+    transition: all 0.3s ease;
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(96, 4, 154, 0.6);
+}
+
+/* Countdown mobile */
+@media(max-width: 768px) {
+    .countdown-boxes {
+        gap: 8px;
+    }
+
+    .countdown-box {
+        padding: 10px 12px;
+        min-width: 58px;
+        border-radius: 8px;
+    }
+
+    .countdown-number {
+        font-size: 1.6rem;
+    }
+
+    .countdown-unit {
+        font-size: 0.6rem;
+    }
+
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+@media(max-width: 400px) {
+    .countdown-box {
+        padding: 8px 8px;
+        min-width: 50px;
+    }
+
+    .countdown-number {
+        font-size: 1.3rem;
     }
 }

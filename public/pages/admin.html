@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechFest Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Laila:wght@700&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/0b62b37b15.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="/images/TRIVIDYA2K26_LOGO.png">
+</head>
+
+<body>
+
+    <!-- Login Section -->
+    <div id="loginSection" class="login-box">
+        <h2>Admin Login</h2>
+        <form id="loginForm">
+            <input type="email" id="adminEmail" placeholder="Admin Email" required>
+            <input type="password" id="adminPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Dashboard Section (Hidden by default) -->
+    <div id="dashboardSection" class="admin-container" style="display: none;">
+        <div class="admin-header">
+            <h1>Admin Dashboard</h1>
+            <button id="logoutBtn" class="logout-btn">Log Out</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Registrations</h3>
+                <div class="stat-number" id="totalReg">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Spardha</h3>
+                <div class="stat-number" id="spardhaReg">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>TechFest</h3>
+                <div class="stat-number" id="techfestReg">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Trividya</h3>
+                <div class="stat-number" id="trividyaReg">0</div>
+            </div>
+        </div>
+
+        <!-- Registration Toggle Control -->
+        <div class="toggle-control">
+            <div class="toggle-info">
+                <i class="fas fa-door-open" id="toggleIcon"></i>
+                <span id="regStatusText">Registration OPEN</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="regToggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="filter-controls">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="spardha">Spardha</button>
+            <button class="filter-btn" data-filter="techfest">TechFest</button>
+            <button class="filter-btn" data-filter="trividya">Trividya</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Event</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Payment Status</th>
+                    </tr>
+                </thead>
+                <tbody id="registrationsTable">
+                    <!-- Rows will be populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+/* Additional custom styles for contact page */
+.contact-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.form-section {
+    background: #140615b3;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 2px rgba(6, 0, 8, 0.66);
+    color: white;
+}
+
+.form-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid white;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+}
+
+.result-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.event-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #00bcd4;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+html {
+    /* Apply background here so it covers the entire viewport */
+    background: rgba(0, 0, 0, 0.83) url("/images/bg-animated.webp") no-repeat center center fixed;
+    background-size: cover;
+    background-blend-mode: darken;
+    min-height: 100%;
+}

@@ -6,6 +6,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+const cors = require('cors');
+
 // Import services and configs (Dependency Injection)
 const dbConfig = require('./server/config/database.config');
 const PaymentService = require('./server/services/PaymentService');
@@ -20,11 +26,57 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Initialize connections
+// Security Headers
+app.use(helmet({
+    contentSecurityPolicy: false, // Disabled for external scripts (Razorpay, FontAwesome)
+    crossOriginResourcePolicy: { policy: "cross-origin" }, // Allow cross-origin resources
+    crossOriginOpenerPolicy: false, // Allow cross-origin popups (Razorpay checkout)
+}));
+
+// Cross-Origin Resource Sharing
+app.use(cors());
+
+// Prevent XSS attacks
+app.use(xss());
+
+// Prevent HTTP Parameter Pollution
+app.use(hpp());
+
+// Rate Limiting (API endpoints only, not static files)
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 500 // limit each IP to 500 requests per windowMs
+});
+app.use('/api', limiter); // Only apply to API routes
+
+// Initialize connections & settings
 (async () => {
     await dbConfig.testConnection();
     await EmailService.verify();
+
+    // Create settings table if not exists
+    const pool = dbConfig.getPool();
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS site_settings (
+            key VARCHAR(50) PRIMARY KEY,
+            value VARCHAR(255) NOT NULL
+        )
+    `);
+    // Insert default registration_open = true if not exists
+    await pool.query(`
+        INSERT INTO site_settings (key, value) 
+        VALUES ('registration_open', 'true') 
+        ON CONFLICT (key) DO NOTHING
+    `);
+    console.log('✅ Site settings loaded');
 })();
+
+// ============================================
+// HEALTH CHECK (for UptimeRobot to keep alive)
+// ============================================
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', uptime: Math.floor(process.uptime()) + 's' });
+});
 
 // ============================================
 // SECURE ENDPOINT: Get Razorpay PUBLIC key only
@@ -67,9 +119,63 @@ app.get('/api/event/:programType/:eventName', (req, res) => {
 });
 
 // ============================================
+// REGISTRATION STATUS (Database-backed toggle)
+// ============================================
+
+// Helper: get registration status from DB
+async function getRegStatus() {
+    const pool = dbConfig.getPool();
+    const result = await pool.query("SELECT value FROM site_settings WHERE key = 'registration_open'");
+    return result.rows[0]?.value === 'true';
+}
+
+// Helper: set registration status in DB
+async function setRegStatus(isOpen) {
+    const pool = dbConfig.getPool();
+    await pool.query("UPDATE site_settings SET value = $1 WHERE key = 'registration_open'", [isOpen ? 'true' : 'false']);
+}
+
+// Public API - check if registration is open
+app.get('/api/registration-status', async (req, res) => {
+    try {
+        const open = await getRegStatus();
+        res.json({ open });
+    } catch (err) {
+        console.error('Status check error:', err);
+        res.json({ open: true }); // Default to open on error
+    }
+});
+
+// Admin API - toggle registration
+app.post('/api/admin/toggle-registration', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
+
+    const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+    const user = auth[0];
+    const pass = auth[1];
+
+    if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
+        const currentStatus = await getRegStatus();
+        const newStatus = !currentStatus;
+        await setRegStatus(newStatus);
+        console.log(`🔄 Registration ${newStatus ? 'OPENED' : 'CLOSED'} by admin (saved to DB)`);
+        res.json({ success: true, open: newStatus });
+    } else {
+        res.status(401).json({ error: 'Invalid Credentials' });
+    }
+});
+
+// ============================================
 // ENDPOINT: Create Razorpay Order (with dynamic pricing)
 // ============================================
 app.post('/create-order', async (req, res) => {
+    // Block orders if registration is closed
+    const regOpen = await getRegStatus();
+    if (!regOpen) {
+        return res.status(403).json({ error: 'Registration is currently closed.' });
+    }
+
     try {
         const { programType, event } = req.body;
 
@@ -208,6 +314,104 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/pages/index.html'));
 });
+
+// ============================================
+// New Endpoints for Contact & Check Registration
+// ============================================
+
+// 1. Contact Form Endpoint
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, message } = req.body;
+
+        if (!name || !email || !message) {
+            return res.status(400).json({ success: false, error: 'All fields are required' });
+        }
+
+        // We use the EmailService transporter but construct a custom mail for Admin
+        const transporter = require('./server/config/email.config').getTransporter();
+
+        const mailOptions = {
+            from: `"${name}" <${process.env.EMAIL_USER}>`, // Send via our authenticated email
+            to: process.env.EMAIL_USER, // Send TO Admin (us)
+            replyTo: email, // Reply to the user
+            subject: `📩 New Inquiry from ${name}`,
+            text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+            html: `
+                <h3>New Contact Inquiry</h3>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <hr>
+                <p><strong>Message:</strong></p>
+                <p>${message.replace(/\n/g, '<br>')}</p>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+        res.json({ success: true, message: 'Message sent successfully' });
+
+    } catch (error) {
+        console.error('Contact API Error:', error);
+        res.status(500).json({ success: false, error: 'Failed to send message' });
+    }
+});
+
+// 2. Check Registration Endpoint
+const RegistrationService = require('./server/services/RegistrationService');
+
+app.post('/api/check-registration', async (req, res) => {
+    try {
+        const { query } = req.body;
+
+        if (!query) {
+            return res.status(400).json({ success: false, error: 'Query is required' });
+        }
+
+        const registrations = await RegistrationService.searchRegistrations(query);
+
+        res.json({ success: true, registrations });
+
+    } catch (error) {
+        console.error('Check Registration Error:', error);
+    }
+});
+
+// 3. Admin Dashboard Endpoint (Basic Security)
+app.get('/api/admin/registrations', async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
+
+        const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+        const user = auth[0];
+        const pass = auth[1];
+
+        // Credentials from .env
+        const adminUser = process.env.ADMIN_USER;
+        const adminPass = process.env.ADMIN_PASS;
+
+        if (user === adminUser && pass === adminPass) {
+            const pool = dbConfig.getPool();
+            const spardha = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'spardha' as programtype FROM spardha`);
+            const techfest = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'techfest' as programtype FROM techfest`);
+            const trividya = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'trividya' as programtype FROM trividya`);
+
+            const allRegistrations = [
+                ...spardha.rows,
+                ...techfest.rows,
+                ...trividya.rows
+            ];
+
+            res.json({ success: true, registrations: allRegistrations });
+        } else {
+            res.status(401).json({ error: 'Invalid Credentials' });
+        }
+    } catch (error) {
+        console.error('Admin API Error:', error);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
 
 // ============================================
 // Start Server

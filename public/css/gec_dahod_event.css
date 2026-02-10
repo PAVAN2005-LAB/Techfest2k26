@@ -167,6 +167,7 @@ h1 {
     padding: 20px;
     background: linear-gradient(to right, hsl(0, 0%, 30%) 0, #883ff9 10%, hsl(0, 0%, 30%) 20%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shine 3s infinite linear;
 }
@@ -182,5 +183,29 @@ h1 {
 
     100% {
         background-position: 600px;
+    }
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 768px) {
+    .tilesWrap li {
+        width: 90%;
+        display: block;
+        margin: 15px auto;
+        padding: 60px 15px 30px;
+    }
+
+    .tilesWrap li h2 {
+        font-size: 60px;
+    }
+
+    h1 {
+        font-size: 28px;
+        letter-spacing: 3px;
+    }
+
+    .tilesWrap li button {
+        transform: translateY(5px);
+        opacity: 1;
     }
 }

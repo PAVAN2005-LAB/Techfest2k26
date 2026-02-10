@@ -62,11 +62,24 @@ class Registration {
         return { valid: true };
     }
 
+    // Check for duplicate registration
+    async checkDuplicate() {
+        const tableName = this.getTableName();
+        const pool = dbConfig.getPool();
+        const sql = `SELECT id FROM ${tableName} WHERE email = $1 AND event = $2`;
+        const result = await pool.query(sql, [this.email, this.event]);
+        return result.rowCount > 0;
+    }
+
     // Save to database (ACID principles - Atomicity)
     async save() {
         const validation = this.validate();
         if (!validation.valid) {
             throw new Error(validation.message);
+        }
+
+        if (await this.checkDuplicate()) {
+            throw new Error('You are already registered for this event with this email.');
         }
 
         const tableName = this.getTableName();

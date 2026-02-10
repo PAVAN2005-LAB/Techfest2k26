@@ -42,8 +42,7 @@
                 "price": 20,
                 "description": "400m",
                 "teamSize": "1 players"
-            },
-            
+            }
         }
     },
     "techfest": {
@@ -99,6 +98,16 @@
                 "price": 350,
                 "description": "Multi-game competition",
                 "teamSize": "1-5 players"
+            },
+            "Grab and Win": {
+                "price": 200,
+                "description": "Fun non-technical event",
+                "teamSize": "4 players"
+            },
+            "EV Exhibition": {
+                "price": 0,
+                "description": "Electric Vehicle Exhibition",
+                "teamSize": "Visitor"
             }
         }
     },

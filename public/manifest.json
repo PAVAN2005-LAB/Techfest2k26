@@ -1,0 +1,24 @@
+{
+    "name": "TechFest 2K26 - GEC Dahod",
+    "short_name": "TechFest2K26",
+    "description": "Official website for TechFest 2K26, Trividya & Spardha - Government College of Engineering, Dahod",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#60049a",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/images/TRIVIDYA2K26_LOGO.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/TRIVIDYA2K26_LOGO.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
