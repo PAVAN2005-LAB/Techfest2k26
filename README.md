@@ -118,3 +118,4 @@ npm run dev
 
 ## 📞 Support
 Developed for **GEC Dahod TechFest 2k26**. For technical support or contribution, contact the lead developer.
+email: pavan.yadav.sde@gmail.com , 230180107045@gecdahod.ac.in
