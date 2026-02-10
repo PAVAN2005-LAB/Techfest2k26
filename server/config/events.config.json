@@ -3,31 +3,47 @@
         "displayName": "Spardha 2k26",
         "teamName": "Spardha Team",
         "events": {
-            "Net Cricket": {
-                "price": 50,
-                "description": "Indoor cricket competition",
-                "teamSize": "5-8 players"
+            "Cricket": {
+                "price": 220,
+                "description": "Cricket Tounament",
+                "teamSize": "13 players"
             },
-            "Box Cricket": {
-                "price": 60,
-                "description": "Box cricket tournament",
-                "teamSize": "6-10 players"
+            "Kho-Kho": {
+                "price": 180,
+                "description": "Kho-kho",
+                "teamSize": "11 players"
             },
             "Volleyball": {
-                "price": 40,
+                "price": 120,
                 "description": "Volleyball championship",
-                "teamSize": "6 players"
+                "teamSize": "8 players"
             },
             "Kabaddi": {
-                "price": 45,
+                "price": 140,
                 "description": "Traditional kabaddi tournament",
-                "teamSize": "7 players"
+                "teamSize": "8 players"
             },
-            "Paint Ball": {
-                "price": 70,
-                "description": "Paintball adventure",
-                "teamSize": "5-10 players"
-            }
+            "Tug of War": {
+                "price": 160,
+                "description": "Tug of War",
+                "teamSize": "8 players"
+            },
+            "Athletic_100m": {
+                "price": 20,
+                "description": "100m",
+                "teamSize": "1 players"
+            },
+            "Athletic_200m": {
+                "price": 160,
+                "description": "Tug of War",
+                "teamSize": "8 players"
+            },
+            "Tug of War": {
+                "price": 160,
+                "description": "Tug of War",
+                "teamSize": "8 players"
+            },
+            
         }
     },
     "techfest": {
