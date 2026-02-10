@@ -1,4 +1,4 @@
-// Secure Server with OOP, SOLID, and ACID Principles
+
 // All sensitive data is hidden from client-side
 
 require('dotenv').config();
@@ -68,7 +68,7 @@ app.use('/api', limiter); // Only apply to API routes
         VALUES ('registration_open', 'true') 
         ON CONFLICT (key) DO NOTHING
     `);
-    console.log('✅ Site settings loaded');
+    console.log(' Site settings loaded');
 })();
 
 // ============================================
@@ -82,13 +82,13 @@ app.get('/health', (req, res) => {
 // SECURE ENDPOINT: Get Razorpay PUBLIC key only
 // ============================================
 app.get('/api/config/razorpay', (req, res) => {
-    console.log('📍 GET /api/config/razorpay - Request received');
+    console.log(' GET /api/config/razorpay - Request received');
     // Only send public key - secret stays on server
     res.json({
         key: PaymentService.getPublicKey()
     });
 });
-console.log('✅ Route registered: GET /api/config/razorpay');
+console.log(' Route registered: GET /api/config/razorpay');
 
 // ============================================
 // API: Get all events for a program
@@ -159,7 +159,7 @@ app.post('/api/admin/toggle-registration', async (req, res) => {
         const currentStatus = await getRegStatus();
         const newStatus = !currentStatus;
         await setRegStatus(newStatus);
-        console.log(`🔄 Registration ${newStatus ? 'OPENED' : 'CLOSED'} by admin (saved to DB)`);
+        console.log(` Registration ${newStatus ? 'OPENED' : 'CLOSED'} by admin (saved to DB)`);
         res.json({ success: true, open: newStatus });
     } else {
         res.status(401).json({ error: 'Invalid Credentials' });
@@ -186,12 +186,12 @@ app.post('/create-order', async (req, res) => {
             const eventPrice = EventService.getEventPrice(programType, event);
             if (eventPrice) {
                 amount = eventPrice;
-                console.log(`💰 Event: ${event} (${programType}) - Price: ₹${amount}`);
+                console.log(` Event: ${event} (${programType}) - Price: ₹${amount}`);
             } else {
-                console.log(`⚠️  Event not found in config, using default: ₹${amount}`);
+                console.log(` Event not found in config, using default: ₹${amount}`);
             }
         } else {
-            console.log(`⚠️  No event details provided, using test amount: ₹${amount}`);
+            console.log(`  No event details provided, using test amount: ₹${amount}`);
         }
 
         const result = await PaymentService.createOrder(amount);
@@ -228,7 +228,7 @@ app.post('/register', async (req, res) => {
             razorpay_signature
         } = req.body;
 
-        console.log('📝 Registration request received');
+        console.log(' Registration request received');
 
         // Step 1: Verify Payment Signature (SECURITY CRITICAL!)
         const isValidPayment = PaymentService.verifyPaymentSignature(
@@ -238,14 +238,14 @@ app.post('/register', async (req, res) => {
         );
 
         if (!isValidPayment) {
-            console.error('❌ Payment verification failed');
+            console.error(' Payment verification failed');
             return res.status(400).json({
                 success: false,
                 message: "Payment verification failed"
             });
         }
 
-        console.log('✅ Payment verified successfully');
+        console.log('Payment verified successfully');
 
         // Step 2: Create Registration instance (OOP)
         const registration = new Registration(req.body);
@@ -266,16 +266,16 @@ app.post('/register', async (req, res) => {
             throw new Error('Failed to save registration');
         }
 
-        console.log(`✅ Registration saved with ID: ${saveResult.id}`);
+        console.log(` Registration saved with ID: ${saveResult.id}`);
 
         // Step 5: Send confirmation email (asynchronous - don't block response)
         const emailData = registration.getEmailData();
         EmailService.sendConfirmationEmail(emailData)
             .then(result => {
                 if (result.success) {
-                    console.log('✅ Confirmation email sent');
+                    console.log(' Confirmation email sent');
                 } else {
-                    console.error('❌ Email failed:', result.error);
+                    console.error(' Email failed:', result.error);
                 }
             });
 
@@ -286,7 +286,7 @@ app.post('/register', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('❌ Registration error:', error.message);
+        console.error(' Registration error:', error.message);
         res.status(500).json({
             success: false,
             message: "Server error: " + error.message
@@ -418,12 +418,12 @@ app.get('/api/admin/registrations', async (req, res) => {
 // ============================================
 app.listen(PORT, () => {
     console.log('\n' + '='.repeat(50));
-    console.log('🚀 Secure Server Running');
+    console.log(' Secure Server Running');
     console.log('='.repeat(50));
-    console.log(`📍 URL: http://localhost:${PORT}`);
-    console.log(`🔒 Security: OOP + SOLID + ACID principles`);
-    console.log(`🗄️  Database: PostgreSQL (Neon)`);
-    console.log(`💳 Payment: Razorpay (secure)`);
-    console.log(`📧 Email: Nodemailer (Gmail)`);
+    console.log(` URL: http://localhost:${PORT}`);
+    console.log(` ok to shine`);
+    console.log(`  Database: PostgreSQL (Neon)`);
+    console.log(` Payment: Razorpay (secure)`);
+    console.log(`Email: Nodemailer (Gmail)`);
     console.log('='.repeat(50) + '\n');
 });
