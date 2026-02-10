@@ -2,29 +2,37 @@
 
 A robust, secure, and dynamic event registration platform for GEC Dahod's TechFest 2k26. Built with Node.js, Express, PostgreSQL, and Razorpay.
 
-live link: https://techfest2k26.onrender.com
+**Live Link:** [https://techfest2k26.onrender.com](https://techfest2k26.onrender.com)
+
 ---
 
 ## ✨ Key Features
 
+### �️ Professional Admin Dashboard
+- **Registration Management:** View and filter all registrations (Spardha, TechFest, Trividya).
+- **Registration Toggle:** Instantly stop or start new registrations site-wide via the dashboard.
+- **Persistent Settings:** Registration status is saved to the database, surviving server restarts.
+- **Analytics:** Real-time stats for total and category-specific registrations.
+
 ### 🛒 Dynamic Registration & Pricing
-- **Automated Pricing:** Prices are fetched dynamically from `server/config/events.config.json`. No code changes required to update fees!
-- **Event Validation:** Ensures users select valid programs and events.
+- **Automated Pricing:** Prices are fetched dynamically from `server/config/events.config.json`.
 - **Secure Payments:** Integrated with Razorpay for safe transaction processing.
+- **Status Verification:** Users can check their registration status anytime using email or Order ID.
 
 ### 📧 Automated Communications
-- **Instant Email Confirmation:** Participants receive immediate confirmation emails with registration details.
-- **Custom Templates:** Program-specific branding (Spardha, TechFest, Trividya).
+- **Instant Email Confirmation:** Automatic confirmation emails with full event details.
+- **Dynamic Templates:** Program-specific branding for Spardha, TechFest, and Trividya.
 
-### 🎨 Rich User Experience
-- **Responsive Design:** Optimized for mobile and desktop.
-- **Event Detail Pages:** 16+ dedicated pages for each event (Net Cricket, Cosmo Clench, etc.) with full descriptions and direct registration links.
-- **Gallery:** Photo showcase of previous events (powered by `public/images/gallery`).
+### 📱 Modern & Professional UX
+- **PWA Support:** Installable as an app on Android/iOS with offline access support.
+- **Optimized Performance:** Animated WebP backgrounds (75% smaller than GIFs) for lightning-fast 5G/4G loading.
+- **Responsive Design:** 100% mobile-first UI with a floating "Back to Top" button and slide-in sidebar.
+- **Countdown Timer:** Live glassmorphism countdown to the event start.
 
-### 🔒 Security Framework
-- **Secure Backend:** Refactored structure following OOP and SOLID principles.
-- **Database:** Cloud-hosted PostgreSQL (Neon) for reliability.
-- **Environment Protection:** Sensitive keys managed via `.env`.
+### 🔒 Security & Performance
+- **Secure Backend:** Implements OOP, SOLID, and ACID principles.
+- **Rate Limiting:** Protects API endpoints from brute-force and abuse.
+- **Environment Protection:** Strict separation of config and secrets using `.env`.
 
 ---
 
@@ -32,28 +40,25 @@ live link: https://techfest2k26.onrender.com
 
 ```
 TechFest2k26/
-├── server.js               # Main Server Entry Point
-├── .env                    # Environment Variables (Not committed)
+├── server.js               # Main Server (Express + Security Middleware)
+├── .env                    # Environment Variables (Secrets)
 │
 ├── server/                 # Backend Architecture
-│   ├── config/             # Configuration (DB, Email, Events JSON)
-│   ├── models/             # Database Models (Registration.model.js)
+│   ├── config/             # DB, Email, Events, Payment Configs
+│   ├── models/             # Database Models (Registration, SiteSettings)
 │   ├── services/           # Business Logic (Payment, Email, EventService)
-│   └── templates/          # HTML Email Templates
+│   └── templates/          # Responsive HTML Email Templates
 │
 ├── public/                 # Frontend Assets
-│   ├── css/                # Stylesheets (Navbar, Hero, Event Details)
-│   ├── images/             # ALL Assets (Moved from root)
-│   │   ├── event-logos/    # specific event images
-│   │   └── ...             # Gallery and UI images
-│   └── pages/              # HTML Views
-│       ├── tech_fest_events/ # 📁 16 Individual Event Detail Pages
-│       ├── reg.html          # Registration Form
-│       ├── gallery.html      # Photo Gallery
-│       └── index.html        # Landing Page
+│   ├── css/                # Optimized CSS (Admin, Navbar, PWA styles)
+│   ├── js/                 # Client-side Logic (Admin, Reg, Countdown, PWA)
+│   ├── images/             # Optimized Assets (Animated WebP, Logos)
+│   ├── pages/              # HTML Views (Admin, Contact, Gallery, Events)
+│   ├── sw.js               # Service Worker (PWA Offline Support)
+│   └── manifest.json       # PWA Manifest
 │
-├── scripts/                # Utility Scripts (DB Setup, Testing)
-└── docs/                   # Documentation Resources
+├── scripts/                # Support Scripts (Background compression, DB debug)
+└── docs/                   # Full System Documentation
 ```
 
 ---
@@ -68,14 +73,16 @@ npm install
 ```
 
 ### 2. Configuration
-Create a `.env` file in the root directory:
+Create a `.env` file in the root directory using `.env.example`:
 ```env
 PORT=3000
-DATABASE_URL=postgres://user:password@hostname/dbname
-RAZORPAY_KEY_ID=rzp_test_...
+DATABASE_URL=postgres://...
+RAZORPAY_KEY_ID=...
 RAZORPAY_KEY_SECRET=...
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_app_password
+EMAIL_USER=...
+EMAIL_PASS=...
+ADMIN_USER=admin@gecdahod.ac.in
+ADMIN_PASS=your_secure_password
 ```
 
 ### 3. Run the Application
@@ -83,35 +90,31 @@ EMAIL_PASS=your_app_password
 # Start Server
 npm start
 
-# Development Mode (Auto-restart)
+# Development Mode
 npm run dev
 ```
 
 ---
 
-## 🔮 Future Roadmap (Planned Features)
-
-- [ ] **Admin Dashboard:** View real-time registrations and payment stats.
-- [ ] **QR Code Ticketing:** Generate QR codes for event entry validation.
-- [ ] **Team Registration:** Allow registering multiple participants at once.
-- [ ] **User Accounts:** Student login portal to manage registrations.
-- [ ] **Live Leaderboard:** Real-time score updates for gaming events.
-
----
-
-## 🛠️ Tech Stack
+## �️ Tech Stack
 
 - **Backend:** Node.js, Express.js
 - **Database:** PostgreSQL (Neon Cloud)
 - **Payment:** Razorpay API
 - **Email:** Nodemailer (Gmail SMTP)
-- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+- **Aesthetic:** Vanilla CSS (Glassmorphism, High-Performance Refined UI)
+- **Features:** PWA (Service Workers), Sharp (Asset Optimization), Helmet (Security)
 
 ---
 
-## 📞 Support & Documentation
+## 🔮 Future Roadmap
 
-For detailed guides, check the `docs/` folder:
-- `docs/QUICKSTART.md` - Setup guide
-- `docs/DYNAMIC_PRICING_GUIDE.md` - How to update prices
-- `docs/SECURITY_REFACTORING.md` - Security details
+- [ ] **QR Code Ticketing:** Automatic QR generation for check-in at the venue.
+- [ ] **Team Registration:** Support for bulk/team event entries.
+- [ ] **Live Leaderboard:** Real-time score updates for sports and gaming.
+- [ ] **SMS Integration:** OTP verification for phone numbers.
+
+---
+
+## 📞 Support
+Developed for **GEC Dahod TechFest 2k26**. For technical support or contribution, contact the lead developer.
