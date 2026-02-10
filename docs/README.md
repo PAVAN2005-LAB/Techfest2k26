@@ -319,3 +319,21 @@ For issues and questions:
 ---
 
 **Made with ❤️ by GEC Dahod TechFest Team**
+
+
+
+order creatrd 
+
+
+curl -u [YOUR_KEY_ID]:[YOUR_KEY_SECRET] \
+-X POST https://api.razorpay.com/v1/orders \
+-H "content-type: application/json" \
+-d '{
+  "amount": 5000,
+  "currency": "<currency>",
+  "receipt": "receipt#1",
+  "notes": {
+    "key1": "value3",
+    "key2": "value2"
+  }
+}'
