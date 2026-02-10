@@ -34,14 +34,14 @@
                 "teamSize": "1 players"
             },
             "Athletic_200m": {
-                "price": 160,
+                "price": 20,
                 "description": "200m",
-                "teamSize": "2 players"
+                "teamSize": "1 players"
             },
-            "Tug of War": {
-                "price": 160,
-                "description": "Tug of War",
-                "teamSize": "8 players"
+            "Athletic_400m": {
+                "price": 20,
+                "description": "400m",
+                "teamSize": "1 players"
             },
             
         }
