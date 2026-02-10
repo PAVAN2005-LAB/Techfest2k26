@@ -35,8 +35,8 @@
             },
             "Athletic_200m": {
                 "price": 160,
-                "description": "Tug of War",
-                "teamSize": "8 players"
+                "description": "200m",
+                "teamSize": "2 players"
             },
             "Tug of War": {
                 "price": 160,
