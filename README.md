@@ -8,13 +8,13 @@ A robust, secure, and dynamic event registration platform for GEC Dahod's TechFe
 
 ## ✨ Key Features
 
-### �️ Professional Admin Dashboard
+### �️ Admin Dashboard
 - **Registration Management:** View and filter all registrations (Spardha, TechFest, Trividya).
 - **Registration Toggle:** Instantly stop or start new registrations site-wide via the dashboard.
 - **Persistent Settings:** Registration status is saved to the database, surviving server restarts.
 - **Analytics:** Real-time stats for total and category-specific registrations.
 
-### 🛒 Dynamic Registration & Pricing
+### 🛒  Registration & Pricing
 - **Automated Pricing:** Prices are fetched dynamically from `server/config/events.config.json`.
 - **Secure Payments:** Integrated with Razorpay for safe transaction processing.
 - **Status Verification:** Users can check their registration status anytime using email or Order ID.
@@ -23,7 +23,7 @@ A robust, secure, and dynamic event registration platform for GEC Dahod's TechFe
 - **Instant Email Confirmation:** Automatic confirmation emails with full event details.
 - **Dynamic Templates:** Program-specific branding for Spardha, TechFest, and Trividya.
 
-### 📱 Modern & Professional UX
+### 📱 Modern &  UX
 - **PWA Support:** Installable as an app on Android/iOS with offline access support.
 - **Optimized Performance:** Animated WebP backgrounds (75% smaller than GIFs) for lightning-fast 5G/4G loading.
 - **Responsive Design:** 100% mobile-first UI with a floating "Back to Top" button and slide-in sidebar.
@@ -31,7 +31,7 @@ A robust, secure, and dynamic event registration platform for GEC Dahod's TechFe
 
 ### 🔒 Security & Performance
 - **Secure Backend:** Implements OOP, SOLID, and ACID principles.
-- **Rate Limiting:** Protects API endpoints from brute-force and abuse.
+- **Rate Limiting:** Protects API endpoints from brute-force and abuse(500 req/10 min).
 - **Environment Protection:** Strict separation of config and secrets using `.env`.
 
 ---
@@ -113,6 +113,8 @@ npm run dev
 - [ ] **Team Registration:** Support for bulk/team event entries.
 - [ ] **Live Leaderboard:** Real-time score updates for sports and gaming.
 - [ ] **SMS Integration:** OTP verification for phone numbers.
+- [ ] **CloudFlare:** Security implements/jwt based login also.
+- [ ] **AdminFeature:** UI based event mangement by admin.
 
 ---
 
