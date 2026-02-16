@@ -21,10 +21,10 @@ class EmailConfig {
     async verifyConnection() {
         try {
             await this.transporter.verify();
-            console.log('✅ Email service ready');
+            console.log(' Email service ready');
             return true;
         } catch (error) {
-            console.error('❌ Email configuration error:', error.message);
+            console.error(' Email configuration error:', error.message);
             return false;
         }
     }

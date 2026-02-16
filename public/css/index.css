@@ -109,7 +109,7 @@ button {
     margin: 15px;
 }
 
-span {
+button span {
     background: #60049a;
     height: 100%;
     width: 100%;

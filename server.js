@@ -49,27 +49,46 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter); // Only apply to API routes
 
-// Initialize connections & settings
-(async () => {
-    await dbConfig.testConnection();
-    await EmailService.verify();
+// Initialize connections & settings (resilient - won't crash if DB is down)
+let dbReady = false;
 
-    // Create settings table if not exists
-    const pool = dbConfig.getPool();
-    await pool.query(`
-        CREATE TABLE IF NOT EXISTS site_settings (
-            key VARCHAR(50) PRIMARY KEY,
-            value VARCHAR(255) NOT NULL
-        )
-    `);
-    // Insert default registration_open = true if not exists
-    await pool.query(`
-        INSERT INTO site_settings (key, value) 
-        VALUES ('registration_open', 'true') 
-        ON CONFLICT (key) DO NOTHING
-    `);
-    console.log('✅ Site settings loaded');
-})();
+async function initDatabase() {
+    try {
+        const connected = await dbConfig.testConnection();
+        if (!connected) {
+            console.log('⚠️ Database not reachable. Will retry...');
+            setTimeout(initDatabase, 10000); // Retry in 10 seconds
+            return;
+        }
+
+        // Create settings table if not exists
+        const pool = dbConfig.getPool();
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS site_settings (
+                key VARCHAR(50) PRIMARY KEY,
+                value VARCHAR(255) NOT NULL
+            )
+        `);
+        // Insert default registration_open = true if not exists
+        await pool.query(`
+            INSERT INTO site_settings (key, value) 
+            VALUES ('registration_open', 'true') 
+            ON CONFLICT (key) DO NOTHING
+        `);
+        dbReady = true;
+        console.log('✅ Site settings loaded');
+    } catch (error) {
+        console.error('⚠️ Database init error:', error.message);
+        console.log('🔄 Retrying database connection in 10 seconds...');
+        setTimeout(initDatabase, 10000);
+    }
+}
+
+// Start initialization (non-blocking)
+initDatabase();
+
+// Email verification (non-blocking)
+EmailService.verify().catch(err => console.error('⚠️ Email verify error:', err.message));
 
 // ============================================
 // HEALTH CHECK (for UptimeRobot to keep alive)
@@ -376,42 +395,139 @@ app.post('/api/check-registration', async (req, res) => {
     }
 });
 
-// 3. Admin Dashboard Endpoint (Basic Security)
-app.get('/api/admin/registrations', async (req, res) => {
-    try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
-
-        const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
-        const user = auth[0];
-        const pass = auth[1];
-
-        // Credentials from .env
-        const adminUser = process.env.ADMIN_USER;
-        const adminPass = process.env.ADMIN_PASS;
-
-        if (user === adminUser && pass === adminPass) {
-            const pool = dbConfig.getPool();
-            const spardha = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'spardha' as programtype FROM spardha`);
-            const techfest = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'techfest' as programtype FROM techfest`);
-            const trividya = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'trividya' as programtype FROM trividya`);
-
-            const allRegistrations = [
-                ...spardha.rows,
-                ...techfest.rows,
-                ...trividya.rows
-            ];
-
-            res.json({ success: true, registrations: allRegistrations });
-        } else {
-            res.status(401).json({ error: 'Invalid Credentials' });
-        }
-    } catch (error) {
-        console.error('Admin API Error:', error);
-        res.status(500).json({ success: false, error: 'Server error' });
+// 3. Admin Login (validates credentials WITHOUT database)
+app.post('/api/admin/login', (req, res) => {
+    if (verifyAdmin(req)) {
+        res.json({ success: true, message: 'Login successful' });
+    } else {
+        res.status(401).json({ error: 'Invalid Credentials' });
     }
 });
 
+// 4. Admin Dashboard Endpoint (Basic Security)
+app.get('/api/admin/registrations', async (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    try {
+        if (!dbReady) {
+            // DB not connected yet - return empty but don't fail login
+            return res.json({ success: true, registrations: [], dbStatus: 'connecting' });
+        }
+
+        const pool = dbConfig.getPool();
+        const spardha = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'spardha' as programtype FROM spardha`);
+        const techfest = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'techfest' as programtype FROM techfest`);
+        const trividya = await pool.query(`SELECT id, firstName, lastName, email, phoneNumber, event, paymentStatus, 'trividya' as programtype FROM trividya`);
+
+        const allRegistrations = [
+            ...spardha.rows,
+            ...techfest.rows,
+            ...trividya.rows
+        ];
+
+        res.json({ success: true, registrations: allRegistrations });
+    } catch (error) {
+        console.error('Admin API Error:', error.message);
+        // Return empty registrations instead of crashing the login
+        res.json({ success: true, registrations: [], dbStatus: 'error', dbError: error.message });
+    }
+});
+
+// ============================================
+// Admin Auth Helper
+// ============================================
+function verifyAdmin(req) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return false;
+    const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+    return auth[0] === process.env.ADMIN_USER && auth[1] === process.env.ADMIN_PASS;
+}
+
+// ============================================
+// ADMIN: Get All Events (for Event Manager)
+// ============================================
+app.get('/api/admin/events', (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    res.json({ success: true, events: EventService.getFullConfig() });
+});
+
+// ============================================
+// ADMIN: Add New Event
+// ============================================
+app.post('/api/admin/events', (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const { program, eventName, price, teamSize, description } = req.body;
+
+    if (!program || !eventName) {
+        return res.status(400).json({ error: 'Program and event name are required' });
+    }
+
+    const result = EventService.addEvent(program, eventName, {
+        price: parseInt(price) || 0,
+        description: description || '',
+        teamSize: teamSize || '1 participant'
+    });
+
+    if (result.success) {
+        console.log(`✅ Event added: ${eventName} (${program})`);
+        res.json({ success: true, message: 'Event added successfully' });
+    } else {
+        res.status(400).json({ error: result.error });
+    }
+});
+
+// ============================================
+// ADMIN: Update Event
+// ============================================
+app.put('/api/admin/events/:program/:eventName', (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const { program, eventName } = req.params;
+    const { newName, price, teamSize, description } = req.body;
+
+    const result = EventService.updateEvent(program, decodeURIComponent(eventName), {
+        newName: newName || eventName,
+        price: parseInt(price) || 0,
+        description: description || '',
+        teamSize: teamSize || '1 participant'
+    });
+
+    if (result.success) {
+        console.log(`✅ Event updated: ${eventName} -> ${newName || eventName} (${program})`);
+        res.json({ success: true, message: 'Event updated successfully' });
+    } else {
+        res.status(400).json({ error: result.error });
+    }
+});
+
+// ============================================
+// ADMIN: Delete Event
+// ============================================
+app.delete('/api/admin/events/:program/:eventName', (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const { program, eventName } = req.params;
+
+    const result = EventService.deleteEvent(program, decodeURIComponent(eventName));
+
+    if (result.success) {
+        console.log(`🗑️ Event deleted: ${eventName} (${program})`);
+        res.json({ success: true, message: 'Event deleted successfully' });
+    } else {
+        res.status(400).json({ error: result.error });
+    }
+});
 
 // ============================================
 // Start Server

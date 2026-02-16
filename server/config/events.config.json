@@ -42,6 +42,11 @@
                 "price": 20,
                 "description": "400m",
                 "teamSize": "1 players"
+            },
+            "football": {
+                "price": 10,
+                "description": "hello world",
+                "teamSize": "8"
             }
         }
     },

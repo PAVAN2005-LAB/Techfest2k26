@@ -1,27 +1,47 @@
-function filterEvents() {
+// Dynamically load events from the server API
+async function loadEvents() {
     const programType = document.getElementById('container__programType').value;
     const eventSelect = document.getElementById('container__event');
-    const options = eventSelect.getElementsByClassName('event-option');
+    const priceDisplay = document.getElementById('price-display');
 
-    // Reset selection
-    eventSelect.value = "";
+    // Reset event dropdown and price display
+    eventSelect.innerHTML = '';
+    if (priceDisplay) priceDisplay.style.display = 'none';
 
-    for (let i = 0; i < options.length; i++) {
-        const option = options[i];
-        if (programType === "" || option.classList.contains(programType)) {
-            option.style.display = 'block';
-            option.disabled = false;
+    if (!programType) {
+        eventSelect.innerHTML = '<option value="">--Select Program first--</option>';
+        return;
+    }
+
+    // Show loading state
+    eventSelect.innerHTML = '<option value="">Loading events...</option>';
+
+    try {
+        const response = await fetch('/api/events/' + encodeURIComponent(programType));
+        const data = await response.json();
+
+        if (data.success && data.events) {
+            eventSelect.innerHTML = '<option value="">--Select Event--</option>';
+
+            for (const eventName in data.events) {
+                if (data.events.hasOwnProperty(eventName)) {
+                    const option = document.createElement('option');
+                    option.value = eventName;
+                    option.textContent = eventName + (data.events[eventName].price > 0 ? ' (₹' + data.events[eventName].price + ')' : ' (Free)');
+                    eventSelect.appendChild(option);
+                }
+            }
         } else {
-            option.style.display = 'none';
-            option.disabled = true;
+            eventSelect.innerHTML = '<option value="">No events available</option>';
         }
+    } catch (error) {
+        console.error('Error loading events:', error);
+        eventSelect.innerHTML = '<option value="">Error loading events</option>';
     }
 }
 
 // Initialize on load
 window.onload = async function () {
-    filterEvents();
-
     // Check registration status
     try {
         var response = await fetch('/api/registration-status');

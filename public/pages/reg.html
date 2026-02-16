@@ -66,7 +66,7 @@
         </div>
         <div class="container__user-input-box">
           <label for="programType">Program Type</label>
-          <select id="container__programType" name="programType" onchange="filterEvents()" required>
+          <select id="container__programType" name="programType" onchange="loadEvents()" required>
             <option value="" selected>--Select Program--</option>
             <option value="spardha">Spardha 2k26</option>
             <option value="techfest">Techfest 2k26</option>
@@ -77,40 +77,8 @@
         <div class="container__user-input-box">
           <label for="select_event">Select Event</label>
           <select id="container__event" name="event" required>
-            <option value="">--Select an option--</option>
-            <!-- Spardha Events -->
-            <option value="Cricket" class="event-option spardha">Cricket</option>
-
-            <option value="Kho-Kho" class="event-option spardha">Kho-kho</option>
-            <option value="Volleyball" class="event-option spardha">Volleyball</option>
-            <option value="Kabaddi" class="event-option spardha">Kabaddi</option>
-            <option value="Tug of War" class="event-option spardha">Tug of War</option>
-            <option value="Athletic_100m" class="event-option spardha">100m</option>
-            <option value="Athletic_200m" class="event-option spardha">200m</option>
-            <option value="Athletic_400m" class="event-option spardha">400m</option>
-
-
-            <!-- Techfest Events -->
-            <option value="Autocad Master" class="event-option techfest">Autocad Master</option>
-            <option value="Cosmo Clench" class="event-option techfest">Cosmo Clench</option>
-            <option value="Cad Mania" class="event-option techfest">Cad Mania</option>
-            <option value="Paper Presentation" class="event-option techfest">Paper Presentation (Eventia)</option>
-            <option value="Death Rush" class="event-option techfest">Death Rush</option>
-            <option value="Innov-a-thon" class="event-option techfest">Innov-a-thon</option>
-            <option value="Hack-Accelerate" class="event-option techfest">Hack-Accelerate</option>
-            <option value="Grab and Win" class="event-option techfest">Grab and Win</option>
-            <option value="EV Exhibition" class="event-option techfest">EV Exhibition</option>
-
-            <!-- Trividya Events -->
-            <option value="Dance" class="event-option trividya">Dance</option>
-            <option value="Singing" class="event-option trividya">Singing</option>
-            <option value="Drama" class="event-option trividya">Drama</option>
-            <option value="Fashion Show" class="event-option trividya">Fashion Show</option>
-
-            <!-- Other/Common -->
-            <option value="Paint Ball" class="event-option techfest">Paint Ball</option>
-            <option value="Overkill" class="event-option techfest">Overkill (Valorant)</option>
-            <option value="Games Com" class="event-option techfest">Games Com</option>
+            <option value="">--Select Program first--</option>
+            <!-- Events loaded dynamically from API -->
           </select>
         </div>
 

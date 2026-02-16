@@ -4,11 +4,10 @@ const path = require('path');
 
 class EventService {
     constructor() {
-        // Load events configuration
-        const configPath = path.join(__dirname, '../config/events.config.json');
-        console.log('📂 EventService loading config from:', configPath);
+        this.configPath = path.join(__dirname, '../config/events.config.json');
+        console.log('📂 EventService loading config from:', this.configPath);
         try {
-            const fileContent = fs.readFileSync(configPath, 'utf-8');
+            const fileContent = fs.readFileSync(this.configPath, 'utf-8');
             this.eventsConfig = JSON.parse(fileContent);
             console.log('✅ Events Configuration Loaded Successfully');
         } catch (error) {
@@ -89,10 +88,89 @@ class EventService {
         return allEvents;
     }
 
-    // Reload configuration (in case file is updated)
+    // Get full config (for admin panel)
+    getFullConfig() {
+        return this.eventsConfig;
+    }
+
+    // ============================
+    // CRUD OPERATIONS
+    // ============================
+
+    // Add a new event
+    addEvent(programType, eventName, eventData) {
+        if (!this.eventsConfig[programType]) {
+            return { success: false, error: 'Program not found' };
+        }
+        if (this.eventsConfig[programType].events[eventName]) {
+            return { success: false, error: 'Event already exists' };
+        }
+
+        this.eventsConfig[programType].events[eventName] = {
+            price: eventData.price || 0,
+            description: eventData.description || '',
+            teamSize: eventData.teamSize || '1 participant'
+        };
+
+        return this._saveConfig();
+    }
+
+    // Update an existing event
+    updateEvent(programType, eventName, newData) {
+        if (!this.eventsConfig[programType]) {
+            return { success: false, error: 'Program not found' };
+        }
+        if (!this.eventsConfig[programType].events[eventName]) {
+            return { success: false, error: 'Event not found' };
+        }
+
+        // If name changed, delete old and create new
+        var newName = newData.newName || eventName;
+        if (newName !== eventName) {
+            // Check new name doesn't conflict
+            if (this.eventsConfig[programType].events[newName]) {
+                return { success: false, error: 'An event with that name already exists' };
+            }
+            delete this.eventsConfig[programType].events[eventName];
+        }
+
+        this.eventsConfig[programType].events[newName] = {
+            price: newData.price !== undefined ? newData.price : 0,
+            description: newData.description || '',
+            teamSize: newData.teamSize || '1 participant'
+        };
+
+        return this._saveConfig();
+    }
+
+    // Delete an event
+    deleteEvent(programType, eventName) {
+        if (!this.eventsConfig[programType]) {
+            return { success: false, error: 'Program not found' };
+        }
+        if (!this.eventsConfig[programType].events[eventName]) {
+            return { success: false, error: 'Event not found' };
+        }
+
+        delete this.eventsConfig[programType].events[eventName];
+        return this._saveConfig();
+    }
+
+    // Save configuration to file
+    _saveConfig() {
+        try {
+            fs.writeFileSync(this.configPath, JSON.stringify(this.eventsConfig, null, 4), 'utf-8');
+            console.log('✅ Events configuration saved to disk');
+            return { success: true };
+        } catch (error) {
+            console.error('❌ Error saving config:', error.message);
+            return { success: false, error: 'Failed to save configuration' };
+        }
+    }
+
+    // Reload configuration (in case file is updated externally)
     reloadConfig() {
-        const configPath = path.join(__dirname, '../config/events.config.json');
-        this.eventsConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+        this.eventsConfig = JSON.parse(fs.readFileSync(this.configPath, 'utf-8'));
         console.log('✅ Events configuration reloaded');
     }
 }
