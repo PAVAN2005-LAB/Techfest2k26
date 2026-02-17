@@ -656,16 +656,20 @@ app.delete('/api/admin/posts/:id', async (req, res) => {
 });
 
 
-// Start Server
-// ============================================
-app.listen(PORT, () => {
-    console.log('\n' + '='.repeat(50));
-    console.log(' Secure Server Running');
-    console.log('='.repeat(50));
-    console.log(` URL: http://localhost:${PORT}`);
-    console.log(` ok to shine`);
-    console.log(`  Database: PostgreSQL (Neon)`);
-    console.log(` Payment: Razorpay (secure)`);
-    console.log(`Email: Nodemailer (Gmail)`);
-    console.log('='.repeat(50) + '\n');
-});
+// Only start server if run directly (not imported as module)
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log('\n' + '='.repeat(50));
+        console.log(' Secure Server Running');
+        console.log('='.repeat(50));
+        console.log(` URL: http://localhost:${PORT}`);
+        console.log(` ok to shine`);
+        console.log(`  Database: PostgreSQL (Neon)`);
+        console.log(` Payment: Razorpay (secure)`);
+        console.log(`Email: Nodemailer (Gmail)`);
+        console.log('='.repeat(50) + '\n');
+    });
+}
+
+// Export app for Vercel
+module.exports = app;
