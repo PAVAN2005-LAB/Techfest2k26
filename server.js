@@ -77,6 +77,9 @@ async function initDatabase() {
     `);
         dbReady = true;
         console.log('✅ Site settings loaded');
+
+        // Load events from database (for production - read-only filesystem)
+        await EventService.initDB();
     } catch (error) {
         console.error('⚠️ Database init error:', error.message);
         console.log('🔄 Retrying database connection in 10 seconds...');

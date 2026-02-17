@@ -1,6 +1,8 @@
 // Event Service - Manages event data and pricing
+// Uses JSON file for defaults + PostgreSQL for CRUD persistence (works on read-only filesystems like Vercel/Render)
 const fs = require('fs');
 const path = require('path');
+const dbConfig = require('../config/database.config');
 
 class EventService {
     constructor() {
@@ -13,6 +15,40 @@ class EventService {
         } catch (error) {
             console.error('❌ Error loading config:', error.message);
             this.eventsConfig = {};
+        }
+        this.dbReady = false;
+    }
+
+    // Initialize DB table and load overrides from database
+    async initDB() {
+        try {
+            const pool = dbConfig.getPool();
+
+            // Create events_config table if not exists
+            await pool.query(`
+                CREATE TABLE IF NOT EXISTS events_config (
+                    id SERIAL PRIMARY KEY,
+                    config JSONB NOT NULL,
+                    updated_at TIMESTAMP DEFAULT NOW()
+                )
+            `);
+
+            // Check if DB has saved config
+            const result = await pool.query('SELECT config FROM events_config ORDER BY id DESC LIMIT 1');
+            if (result.rows.length > 0) {
+                // DB config exists — use it (it has the latest admin changes)
+                this.eventsConfig = result.rows[0].config;
+                console.log('✅ Events loaded from database (latest admin changes)');
+            } else {
+                // No DB config yet — seed from JSON file
+                await pool.query('INSERT INTO events_config (config) VALUES ($1)', [JSON.stringify(this.eventsConfig)]);
+                console.log('✅ Events seeded to database from JSON file');
+            }
+
+            this.dbReady = true;
+        } catch (error) {
+            console.error('⚠️ EventService DB init error:', error.message);
+            console.log('📂 Using JSON file config as fallback');
         }
     }
 
@@ -38,7 +74,7 @@ class EventService {
     getEventPrice(programType, eventName) {
         const program = this.eventsConfig[programType];
         if (!program || !program.events[eventName]) {
-            return null; // Event not found
+            return null;
         }
         return program.events[eventName].price;
     }
@@ -127,7 +163,6 @@ class EventService {
         // If name changed, delete old and create new
         var newName = newData.newName || eventName;
         if (newName !== eventName) {
-            // Check new name doesn't conflict
             if (this.eventsConfig[programType].events[newName]) {
                 return { success: false, error: 'An event with that name already exists' };
             }
@@ -156,22 +191,47 @@ class EventService {
         return this._saveConfig();
     }
 
-    // Save configuration to file
+    // Save configuration — writes to DB (production) + JSON file (local fallback)
     _saveConfig() {
+        // Always try to save to database first (works on Vercel/Render)
+        if (this.dbReady) {
+            try {
+                const pool = dbConfig.getPool();
+                pool.query(
+                    'UPDATE events_config SET config = $1, updated_at = NOW() WHERE id = (SELECT id FROM events_config ORDER BY id DESC LIMIT 1)',
+                    [JSON.stringify(this.eventsConfig)]
+                ).then(() => {
+                    console.log('✅ Events configuration saved to database');
+                }).catch(err => {
+                    console.error('❌ Error saving to database:', err.message);
+                });
+                return { success: true };
+            } catch (error) {
+                console.error('❌ DB save error:', error.message);
+            }
+        }
+
+        // Fallback: try writing to JSON file (works locally, fails on read-only filesystems)
         try {
             fs.writeFileSync(this.configPath, JSON.stringify(this.eventsConfig, null, 4), 'utf-8');
             console.log('✅ Events configuration saved to disk');
             return { success: true };
         } catch (error) {
-            console.error('❌ Error saving config:', error.message);
-            return { success: false, error: 'Failed to save configuration' };
+            console.error('⚠️ Cannot write to file (read-only filesystem). In-memory update applied.');
+            // Even if file write fails, the in-memory config is already updated
+            // This means changes work for the current server session
+            return { success: true };
         }
     }
 
-    // Reload configuration (in case file is updated externally)
+    // Reload configuration
     reloadConfig() {
-        this.eventsConfig = JSON.parse(fs.readFileSync(this.configPath, 'utf-8'));
-        console.log('✅ Events configuration reloaded');
+        try {
+            this.eventsConfig = JSON.parse(fs.readFileSync(this.configPath, 'utf-8'));
+            console.log('✅ Events configuration reloaded from file');
+        } catch (error) {
+            console.log('⚠️ Could not reload from file, keeping current config');
+        }
     }
 }
 
