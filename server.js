@@ -114,7 +114,8 @@ console.log(' Route registered: GET /api/config/razorpay');
 // ============================================
 // API: Get all events for a program
 // ============================================
-app.get('/api/events/:programType', (req, res) => {
+app.get('/api/events/:programType', async (req, res) => {
+    await EventService.refreshFromDB();
     const { programType } = req.params;
     const events = EventService.getProgramEvents(programType);
 
@@ -128,7 +129,8 @@ app.get('/api/events/:programType', (req, res) => {
 // ============================================
 // API: Get specific event details
 // ============================================
-app.get('/api/event/:programType/:eventName', (req, res) => {
+app.get('/api/event/:programType/:eventName', async (req, res) => {
+    await EventService.refreshFromDB();
     const { programType, eventName } = req.params;
     const eventDetails = EventService.getEventDetails(programType, eventName);
 
@@ -450,10 +452,11 @@ function verifyAdmin(req) {
 // ============================================
 // ADMIN: Get All Events (for Event Manager)
 // ============================================
-app.get('/api/admin/events', (req, res) => {
+app.get('/api/admin/events', async (req, res) => {
     if (!verifyAdmin(req)) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
+    await EventService.refreshFromDB();
     res.json({ success: true, events: EventService.getFullConfig() });
 });
 

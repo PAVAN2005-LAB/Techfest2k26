@@ -52,6 +52,20 @@ class EventService {
         }
     }
 
+    // Refresh in-memory config from database (picks up direct DB changes)
+    async refreshFromDB() {
+        if (!this.dbReady) return;
+        try {
+            const pool = dbConfig.getPool();
+            const result = await pool.query('SELECT config FROM events_config ORDER BY id DESC LIMIT 1');
+            if (result.rows.length > 0) {
+                this.eventsConfig = result.rows[0].config;
+            }
+        } catch (error) {
+            console.error('⚠️ DB refresh error:', error.message);
+        }
+    }
+
     // Get all programs
     getAllPrograms() {
         return Object.keys(this.eventsConfig);
