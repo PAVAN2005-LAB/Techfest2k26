@@ -193,35 +193,29 @@ class EventService {
 
     // Save configuration — writes to DB (production) + JSON file (local fallback)
     _saveConfig() {
-        // Always try to save to database first (works on Vercel/Render)
+        // Save to database (production-safe)
         if (this.dbReady) {
-            try {
-                const pool = dbConfig.getPool();
-                pool.query(
-                    'UPDATE events_config SET config = $1, updated_at = NOW() WHERE id = (SELECT id FROM events_config ORDER BY id DESC LIMIT 1)',
-                    [JSON.stringify(this.eventsConfig)]
-                ).then(() => {
-                    console.log('✅ Events configuration saved to database');
-                }).catch(err => {
-                    console.error('❌ Error saving to database:', err.message);
-                });
-                return { success: true };
-            } catch (error) {
-                console.error('❌ DB save error:', error.message);
-            }
+            const pool = dbConfig.getPool();
+            pool.query(
+                'UPDATE events_config SET config = $1, updated_at = NOW() WHERE id = (SELECT id FROM events_config ORDER BY id DESC LIMIT 1)',
+                [JSON.stringify(this.eventsConfig)]
+            ).then(() => {
+                console.log('✅ Events saved to database');
+            }).catch(err => {
+                console.error('❌ DB save error:', err.message);
+            });
         }
 
-        // Fallback: try writing to JSON file (works locally, fails on read-only filesystems)
+        // Also save to JSON file (keeps file in sync locally)
         try {
             fs.writeFileSync(this.configPath, JSON.stringify(this.eventsConfig, null, 4), 'utf-8');
-            console.log('✅ Events configuration saved to disk');
-            return { success: true };
+            console.log('✅ Events saved to JSON file');
         } catch (error) {
-            console.error('⚠️ Cannot write to file (read-only filesystem). In-memory update applied.');
-            // Even if file write fails, the in-memory config is already updated
-            // This means changes work for the current server session
-            return { success: true };
+            // Read-only filesystem (Vercel/Render) — that's fine, DB has it
+            console.log('⚠️ JSON file write skipped (read-only filesystem)');
         }
+
+        return { success: true };
     }
 
     // Reload configuration
