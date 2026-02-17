@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var navItems = document.querySelectorAll('.nav-item');
     var tabRegistrations = document.getElementById('tabRegistrations');
     var tabEvents = document.getElementById('tabEvents');
+    var tabPosts = document.getElementById('tabPosts');
 
     // Event Manager
     var eventsGrid = document.getElementById('eventsGrid');
@@ -48,6 +49,23 @@ document.addEventListener('DOMContentLoaded', function () {
     var isEditing = false;
     var deleteTarget = null;
 
+    // Post Manager
+    var postsGrid = document.getElementById('postsGrid');
+    var btnAddPost = document.getElementById('btnAddPost');
+    var postModal = document.getElementById('postModal');
+    var postModalTitle = document.getElementById('postModalTitle');
+    var postForm = document.getElementById('postForm');
+    var postModalClose = document.getElementById('postModalClose');
+    var btnCancelPostModal = document.getElementById('btnCancelPostModal');
+    var deletePostModal = document.getElementById('deletePostModal');
+    var deletePostTitle = document.getElementById('deletePostTitle');
+    var deletePostModalClose = document.getElementById('deletePostModalClose');
+    var btnCancelDeletePost = document.getElementById('btnCancelDeletePost');
+    var btnConfirmDeletePost = document.getElementById('btnConfirmDeletePost');
+    var allPosts = [];
+    var isEditingPost = false;
+    var deletePostTarget = null;
+
     // =========================================
     // TOAST NOTIFICATIONS
     // =========================================
@@ -74,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchRegistrations(savedAuth);
         fetchRegStatus(savedAuth);
         fetchAllEvents();
+        fetchAllPosts();
     }
 
     // =========================================
@@ -146,12 +165,16 @@ document.addEventListener('DOMContentLoaded', function () {
             var tab = item.getAttribute('data-tab');
             tabRegistrations.classList.remove('active');
             tabEvents.classList.remove('active');
+            tabPosts.classList.remove('active');
 
             if (tab === 'registrations') {
                 tabRegistrations.classList.add('active');
             } else if (tab === 'events') {
                 tabEvents.classList.add('active');
                 renderEvents();
+            } else if (tab === 'posts') {
+                tabPosts.classList.add('active');
+                fetchAllPosts();
             }
         });
     });
@@ -584,6 +607,225 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.key === 'Escape') {
             closeEventModal();
             closeDeleteModal();
+            closePostModal();
+            closeDeletePostModal();
         }
     });
+
+    // =========================================
+    // POST MANAGER - FETCH ALL POSTS
+    // =========================================
+    async function fetchAllPosts() {
+        var authHeader = sessionStorage.getItem('adminAuth');
+        if (!authHeader) return;
+
+        try {
+            var response = await fetch('/api/admin/posts', {
+                headers: { 'Authorization': authHeader }
+            });
+            var data = await response.json();
+            if (data.success) {
+                allPosts = data.posts;
+                renderPosts();
+            }
+        } catch (error) {
+            console.error('Fetch posts error:', error);
+            showToast('Failed to load posts.', 'error');
+        }
+    }
+
+    // =========================================
+    // RENDER POST CARDS
+    // =========================================
+    function renderPosts() {
+        if (!postsGrid) return;
+        postsGrid.innerHTML = '';
+
+        if (allPosts.length === 0) {
+            postsGrid.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>No posts yet. Click "Add New Post" to create one.</p></div>';
+            return;
+        }
+
+        allPosts.forEach(function (post, index) {
+            postsGrid.appendChild(createPostCard(post, index));
+        });
+    }
+
+    function createPostCard(post, delay) {
+        var card = document.createElement('div');
+        card.className = 'event-card';
+        card.style.animationDelay = (delay * 0.05) + 's';
+
+        var dateStr = new Date(post.date).toLocaleDateString('en-IN', {
+            year: 'numeric', month: 'short', day: 'numeric'
+        });
+
+        var statusBadge = post.active
+            ? '<span class="badge badge-success">Active</span>'
+            : '<span class="badge badge-muted">Hidden</span>';
+
+        var newBadge = post.is_new ? '<span class="badge badge-new">NEW</span>' : '';
+
+        card.innerHTML = '<div class="event-card-header"><h3>' + post.title + '</h3>' + statusBadge + newBadge + '</div>' +
+            '<div class="event-card-body"><p class="event-description">' + post.content + '</p>' +
+            '<div class="event-meta"><span><i class="fas fa-calendar"></i> ' + dateStr + '</span></div></div>' +
+            '<div class="event-card-actions">' +
+            '<button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn-delete" title="Delete"><i class="fas fa-trash-alt"></i></button>' +
+            '<button class="btn-toggle-vis" title="' + (post.active ? 'Hide' : 'Show') + '"><i class="fas ' + (post.active ? 'fa-eye-slash' : 'fa-eye') + '"></i></button>' +
+            '</div>';
+
+        // Edit button
+        card.querySelector('.btn-edit').addEventListener('click', function () {
+            openPostModal(post);
+        });
+
+        // Delete button
+        card.querySelector('.btn-delete').addEventListener('click', function () {
+            deletePostTarget = post.id;
+            deletePostTitle.textContent = post.title;
+            deletePostModal.classList.add('active');
+        });
+
+        // Toggle visibility button
+        card.querySelector('.btn-toggle-vis').addEventListener('click', async function () {
+            var authHeader = sessionStorage.getItem('adminAuth');
+            try {
+                var response = await fetch('/api/admin/posts/' + post.id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': authHeader },
+                    body: JSON.stringify({ active: !post.active })
+                });
+                var data = await response.json();
+                if (data.success) {
+                    showToast('Post ' + (post.active ? 'hidden' : 'shown') + ' successfully!', 'success');
+                    fetchAllPosts();
+                } else {
+                    showToast(data.error || 'Failed to update post.', 'error');
+                }
+            } catch (error) {
+                showToast('Server error.', 'error');
+            }
+        });
+
+        return card;
+    }
+
+    // =========================================
+    // POST MODAL
+    // =========================================
+    function openPostModal(post) {
+        if (post) {
+            isEditingPost = true;
+            postModalTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Post';
+            document.getElementById('editPostId').value = post.id;
+            document.getElementById('postTitle').value = post.title;
+            document.getElementById('postContent').value = post.content;
+        } else {
+            isEditingPost = false;
+            postModalTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Post';
+            document.getElementById('editPostId').value = '';
+            postForm.reset();
+        }
+        postModal.classList.add('active');
+    }
+
+    function closePostModal() {
+        postModal.classList.remove('active');
+        postForm.reset();
+        isEditingPost = false;
+    }
+
+    function closeDeletePostModal() {
+        deletePostModal.classList.remove('active');
+        deletePostTarget = null;
+    }
+
+    btnAddPost.addEventListener('click', function () { openPostModal(null); });
+    postModalClose.addEventListener('click', closePostModal);
+    btnCancelPostModal.addEventListener('click', closePostModal);
+    deletePostModalClose.addEventListener('click', closeDeletePostModal);
+    btnCancelDeletePost.addEventListener('click', closeDeletePostModal);
+
+    // =========================================
+    // SAVE POST (CREATE / UPDATE)
+    // =========================================
+    postForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var authHeader = sessionStorage.getItem('adminAuth');
+        if (!authHeader) return;
+
+        var title = document.getElementById('postTitle').value.trim();
+        var content = document.getElementById('postContent').value.trim();
+        var postId = document.getElementById('editPostId').value;
+
+        if (!title || !content) {
+            showToast('Please fill all fields.', 'error');
+            return;
+        }
+
+        var btnSave = document.getElementById('btnSavePost');
+        btnSave.disabled = true;
+        btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+        try {
+            var url = isEditingPost ? '/api/admin/posts/' + postId : '/api/admin/posts';
+            var method = isEditingPost ? 'PUT' : 'POST';
+
+            var response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json', 'Authorization': authHeader },
+                body: JSON.stringify({ title: title, content: content })
+            });
+
+            var data = await response.json();
+            if (data.success) {
+                showToast(isEditingPost ? 'Post updated!' : 'Post created!', 'success');
+                closePostModal();
+                fetchAllPosts();
+            } else {
+                showToast(data.error || 'Failed to save post.', 'error');
+            }
+        } catch (error) {
+            console.error('Save post error:', error);
+            showToast('Server error. Please try again.', 'error');
+        } finally {
+            btnSave.disabled = false;
+            btnSave.innerHTML = '<i class="fas fa-save"></i> Save Post';
+        }
+    });
+
+    // =========================================
+    // DELETE POST
+    // =========================================
+    btnConfirmDeletePost.addEventListener('click', async function () {
+        if (!deletePostTarget) return;
+        var authHeader = sessionStorage.getItem('adminAuth');
+        if (!authHeader) return;
+
+        btnConfirmDeletePost.disabled = true;
+        btnConfirmDeletePost.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
+        try {
+            var response = await fetch('/api/admin/posts/' + deletePostTarget, {
+                method: 'DELETE',
+                headers: { 'Authorization': authHeader }
+            });
+            var data = await response.json();
+            if (data.success) {
+                showToast('Post deleted!', 'success');
+                closeDeletePostModal();
+                fetchAllPosts();
+            } else {
+                showToast(data.error || 'Failed to delete post.', 'error');
+            }
+        } catch (error) {
+            console.error('Delete post error:', error);
+            showToast('Server error. Please try again.', 'error');
+        } finally {
+            btnConfirmDeletePost.disabled = false;
+            btnConfirmDeletePost.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        }
+    });
+
 });

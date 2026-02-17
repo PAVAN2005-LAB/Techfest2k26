@@ -75,6 +75,19 @@ async function initDatabase() {
         VALUES ('registration_open', 'true') 
         ON CONFLICT (key) DO NOTHING
     `);
+        // Create posts table if not exists
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS posts (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                content TEXT NOT NULL,
+                date TIMESTAMP DEFAULT NOW(),
+                is_new BOOLEAN DEFAULT true,
+                active BOOLEAN DEFAULT true
+            )
+        `);
+        console.log('✅ Posts table ready');
+
         dbReady = true;
         console.log('✅ Site settings loaded');
 
@@ -533,8 +546,116 @@ app.delete('/api/admin/events/:program/:eventName', (req, res) => {
         res.status(400).json({ error: result.error });
     }
 });
+// ============================================
+// PUBLIC: Get all active posts (for notice board)
+// ============================================
+app.get('/api/posts', async (req, res) => {
+    try {
+        if (!dbReady) {
+            return res.json({ success: true, posts: [] });
+        }
+        const pool = dbConfig.getPool();
+        const result = await pool.query(
+            'SELECT id, title, content, date, is_new FROM posts WHERE active = true ORDER BY date DESC LIMIT 20'
+        );
+        res.json({ success: true, posts: result.rows });
+    } catch (error) {
+        console.error('Posts API Error:', error.message);
+        res.json({ success: true, posts: [] });
+    }
+});
 
 // ============================================
+// ADMIN: Get all posts
+// ============================================
+app.get('/api/admin/posts', async (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    try {
+        const pool = dbConfig.getPool();
+        const result = await pool.query('SELECT * FROM posts ORDER BY date DESC');
+        res.json({ success: true, posts: result.rows });
+    } catch (error) {
+        console.error('Admin Posts Error:', error.message);
+        res.status(500).json({ error: 'Failed to fetch posts' });
+    }
+});
+
+// ============================================
+// ADMIN: Create new post
+// ============================================
+app.post('/api/admin/posts', async (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { title, content } = req.body;
+    if (!title || !content) {
+        return res.status(400).json({ error: 'Title and content are required' });
+    }
+    try {
+        const pool = dbConfig.getPool();
+        const result = await pool.query(
+            'INSERT INTO posts (title, content, is_new) VALUES ($1, $2, true) RETURNING *',
+            [title, content]
+        );
+        console.log(`📝 Post created: ${title}`);
+        res.json({ success: true, post: result.rows[0] });
+    } catch (error) {
+        console.error('Create Post Error:', error.message);
+        res.status(500).json({ error: 'Failed to create post' });
+    }
+});
+
+// ============================================
+// ADMIN: Update post
+// ============================================
+app.put('/api/admin/posts/:id', async (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { id } = req.params;
+    const { title, content, is_new, active } = req.body;
+    try {
+        const pool = dbConfig.getPool();
+        const result = await pool.query(
+            'UPDATE posts SET title = COALESCE($1, title), content = COALESCE($2, content), is_new = COALESCE($3, is_new), active = COALESCE($4, active) WHERE id = $5 RETURNING *',
+            [title, content, is_new, active, id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+        console.log(`📝 Post updated: ${result.rows[0].title}`);
+        res.json({ success: true, post: result.rows[0] });
+    } catch (error) {
+        console.error('Update Post Error:', error.message);
+        res.status(500).json({ error: 'Failed to update post' });
+    }
+});
+
+// ============================================
+// ADMIN: Delete post
+// ============================================
+app.delete('/api/admin/posts/:id', async (req, res) => {
+    if (!verifyAdmin(req)) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { id } = req.params;
+    try {
+        const pool = dbConfig.getPool();
+        const result = await pool.query('DELETE FROM posts WHERE id = $1 RETURNING *', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+        console.log(`🗑️ Post deleted: ${result.rows[0].title}`);
+        res.json({ success: true, message: 'Post deleted' });
+    } catch (error) {
+        console.error('Delete Post Error:', error.message);
+        res.status(500).json({ error: 'Failed to delete post' });
+    }
+});
+
+
 // Start Server
 // ============================================
 app.listen(PORT, () => {
