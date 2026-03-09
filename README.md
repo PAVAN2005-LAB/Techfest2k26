@@ -1,34 +1,37 @@
-# 🚀 TechFest 2k26 — Event Registration System
+#  TechFest 2k26 — Event Registration System
 
-A robust, secure, and dynamic event registration platform for **GEC Dahod's TechFest 2k26, Trividya 2k26 & Spardha 2k26**. Built with Node.js, Express, PostgreSQL, and Razorpay.
+A registration platform for **GEC Dahod's TechFest 2k26, Trividya 2k26 & Spardha 2k26**. Built with Node.js, Express, PostgreSQL, and Razorpay.
 
 **🌐 Live:** [https://techfest2k26.onrender.com](https://techfest2k26.onrender.com)
 
 ---
 
-## ✨ Features
+##  Features
 
-### 🛡️ Admin Dashboard
+###  Admin Dashboard
 - **Event Manager** — Add, edit, and delete events across all programs (Spardha, TechFest, Trividya) from the UI. Changes reflect instantly on the registration form.
 - **Registration Management** — View and filter all registrations with real-time stats.
 - **Registration Toggle** — Instantly enable/disable registrations site-wide. Status is persisted in the database.
 - **Secure Login** — Admin authentication works independently of database connectivity.
 
-### 🛒 Dynamic Registration & Pricing
+###  Dynamic Registration & Pricing
 - **Live Event Loading** — Events are fetched dynamically from the server API, not hardcoded.
 - **Automated Pricing** — Prices are managed via `server/config/events.config.json` and shown in the registration form.
 - **Secure Payments** — Integrated with Razorpay for safe transaction processing.
 - **Status Verification** — Users can check their registration status using email or Order ID.
 
-### 📧 Automated Communications
+###  Automated Communications
 - **Instant Email Confirmation** — Automatic confirmation emails with full event and payment details.
 - **Dynamic Templates** — Program-specific branding for Spardha, TechFest, and Trividya emails.
 
 
+### Example Screenshot:
+- home page - <div align="center">
+<img width="30%" src="">
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 TechFest2k26/
@@ -57,7 +60,7 @@ TechFest2k26/
 
 ---
 
-## 🏁 Run Locally
+##  Run Locally
 
 ### Prerequisites
 
@@ -123,7 +126,7 @@ npm run dev
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer       | Technology                                      |
 |-------------|--------------------------------------------------|
@@ -139,7 +142,7 @@ npm run dev
 
 ---
 
-## � Admin Panel Usage
+##  Admin Panel Usage
 
 1. Navigate to `/pages/admin.html`
 2. Login with the credentials set in your `.env` file (`ADMIN_USER` and `ADMIN_PASS`)
