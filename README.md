@@ -27,7 +27,7 @@ A registration platform for **GEC Dahod's TechFest 2k26, Trividya 2k26 & Spardha
 
 ### Example Screenshot:
 - home page - <div align="center">
-<img width="30%" src="">
+<img width="30%" src="https://github.com/PAVAN2005-LAB/Techfest2k26/main">
 
 ---
 
