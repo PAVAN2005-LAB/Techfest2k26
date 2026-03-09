@@ -102,7 +102,7 @@ async function updateEventPrice() {
             // Update button text
             submitBtn.textContent = `Pay ₹${price} & Register`;
 
-            console.log(`✅ Price fetched: ₹${price} for ${event}`);
+            console.log(` Price fetched: ₹${price} for ${event}`);
         } else {
             priceDisplay.style.display = 'none';
             submitBtn.textContent = 'Pay & Register';
