@@ -24,17 +24,7 @@ A robust, secure, and dynamic event registration platform for **GEC Dahod's Tech
 - **Instant Email Confirmation** — Automatic confirmation emails with full event and payment details.
 - **Dynamic Templates** — Program-specific branding for Spardha, TechFest, and Trividya emails.
 
-### 📱 Modern & Professional UX
-- **PWA Support** — Installable as an app on Android/iOS with offline access.
-- **Optimized Performance** — Animated WebP backgrounds (75% smaller than GIFs).
-- **Responsive Design** — Mobile-first UI with floating "Back to Top" button and slide-in sidebar.
-- **Live Countdown Timer** — Glassmorphism countdown to the event start date.
 
-### 🔒 Security
-- **Secure Backend** — OOP, SOLID, and ACID design principles.
-- **Rate Limiting** — API endpoints protected from brute-force and abuse.
-- **Helmet & XSS Protection** — HTTP security headers and input sanitization.
-- **Environment Protection** — Secrets isolated in `.env`, never exposed client-side.
 
 ---
 
