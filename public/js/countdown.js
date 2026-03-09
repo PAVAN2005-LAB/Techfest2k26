@@ -1,6 +1,6 @@
-// Countdown Timer - Set your event date here
+// Countdown Timer - 
 (function () {
-    // EVENT DATE - Change this to your actual event date
+    // EVENT DATE - 
     var eventDate = new Date('February 20, 2026 09:00:00').getTime();
 
     var daysEl = document.getElementById('days');
@@ -21,7 +21,7 @@
             minutesEl.textContent = '00';
             secondsEl.textContent = '00';
             var label = document.querySelector('.countdown-label');
-            if (label) label.textContent = '🎉 EVENT IS LIVE!';
+            if (label) label.textContent = ' EVENT IS LIVE!';
             return;
         }
 
